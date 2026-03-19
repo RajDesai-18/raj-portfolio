@@ -22,7 +22,7 @@ export function Section({
       className={cn(
         "relative w-full",
         !flush && "py-[clamp(6rem,12vh,10rem)]",
-        fullHeight && "min-h-screen",
+        fullHeight && "min-h-screen flex flex-col justify-center",
         className
       )}
       {...props}

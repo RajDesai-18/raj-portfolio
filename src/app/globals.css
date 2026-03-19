@@ -40,6 +40,14 @@
 }
 
 @font-face {
+  font-family: "Clash Display Variable";
+  src: url("/fonts/ClashDisplay-Variable.woff2") format("woff2-variations");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Satoshi";
   src: url("/fonts/Satoshi-Light.woff2") format("woff2");
   font-weight: 300;
@@ -422,4 +430,17 @@ button:hover,
   [data-cursor-hover] {
     cursor: pointer;
   }
+}
+
+/* ───────────────────────────────────────────
+   About Section — SplitText character styles
+   ─────────────────────────────────────────── */
+.about-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.about-char {
+  display: inline-block;
+  will-change: opacity;
 }

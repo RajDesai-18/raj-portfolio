@@ -38,7 +38,7 @@ export function HeroSection({ skipLoading = false, onReady }: HeroSectionProps) 
 
     tl.to(obj, {
       val: 100,
-      duration: 6,
+      duration: 4,
       ease: "power4.inOut",
       onUpdate: () => {
         setCount(Math.round(obj.val));

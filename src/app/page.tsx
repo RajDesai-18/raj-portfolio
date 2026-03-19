@@ -7,6 +7,7 @@ import { Navigation } from "@/components/layout/navigation";
 import { Section } from "@/components/layout/section";
 import { Container } from "@/components/layout/container";
 import { SectionLabel } from "@/components/layout/section-label";
+import { AboutSection } from "@/components/sections/about-section";
 import { GhostText } from "@/components/background/ghost-text";
 
 export default function Home() {
@@ -31,27 +32,10 @@ export default function Home() {
       <HeroSection skipLoading={skipLoading} onReady={() => setHeroReady(true)} />
 
       {/* ─── About ─── */}
-      <Section id="about" className="relative overflow-hidden">
-        <GhostText text="ABOUT" align="right" speed={0.4} offsetY="5%" />
-        <Container narrow className="relative" style={{ zIndex: 1 }}>
-          <SectionLabel number="01">About Me</SectionLabel>
-          <p className="font-body text-lg leading-relaxed" style={{ color: "var(--text)" }}>
-            I&apos;m a product-minded fullstack engineer who likes building things that are both{" "}
-            <span className="font-semibold" style={{ color: "var(--accent-raw)" }}>
-              useful
-            </span>{" "}
-            and{" "}
-            <span className="font-semibold" style={{ color: "var(--accent-raw)" }}>
-              enjoyable
-            </span>{" "}
-            to use. I care a lot about the thinking behind software -- why it exists, how it
-            behaves, and how it makes people feel when they use it.
-          </p>
-        </Container>
-      </Section>
+      <AboutSection />
 
       {/* ─── Skills ─── */}
-      <Section id="skills" className="relative overflow-hidden">
+      <Section id="skills" fullHeight className="relative overflow-hidden">
         <GhostText text="SKILLS" align="left" speed={0.6} offsetY="10%" />
         <Container className="relative" style={{ zIndex: 1 }}>
           <SectionLabel number="02">What I Do</SectionLabel>
@@ -62,7 +46,7 @@ export default function Home() {
       </Section>
 
       {/* ─── Work ─── */}
-      <Section id="work" className="relative overflow-hidden">
+      <Section id="work" className="relative overflow-hidden py-[15vh]">
         <GhostText text="WORK" align="right" speed={0.35} offsetY="8%" />
         <Container className="relative" style={{ zIndex: 1 }}>
           <SectionLabel number="03">Work</SectionLabel>
@@ -73,7 +57,7 @@ export default function Home() {
       </Section>
 
       {/* ─── Experience ─── */}
-      <Section id="experience" className="relative overflow-hidden">
+      <Section id="experience" fullHeight className="relative overflow-hidden">
         <GhostText text="EXP" align="left" speed={0.5} offsetY="12%" />
         <Container className="relative" style={{ zIndex: 1 }}>
           <SectionLabel number="04">Experience</SectionLabel>
@@ -84,7 +68,7 @@ export default function Home() {
       </Section>
 
       {/* ─── Contact ─── */}
-      <Section id="contact" className="relative overflow-hidden">
+      <Section id="contact" fullHeight className="relative overflow-hidden">
         <GhostText text="SAY HI" align="center" speed={0.45} offsetY="5%" />
         <Container narrow className="relative" style={{ zIndex: 1 }}>
           <SectionLabel number="05">Contact</SectionLabel>
@@ -98,7 +82,7 @@ export default function Home() {
       <footer className="py-8 relative" style={{ zIndex: 1 }}>
         <Container>
           <p
-            className="font-mono text-[0.6875rem] text-center uppercase tracking-[0.1em]"
+            className="font-mono text-[0.6875rem] text-center uppercase tracking-widest"
             style={{ color: "var(--text-muted)" }}
           >
             &copy; {new Date().getFullYear()} Raj Desai
