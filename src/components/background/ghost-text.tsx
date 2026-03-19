@@ -5,11 +5,8 @@ import { gsap } from "@/lib/gsap";
 
 interface GhostTextProps {
   text: string;
-  /** Speed multiplier: 0.5 = half speed (feels far), 1.5 = faster (feels close) */
   speed?: number;
-  /** Alignment */
   align?: "left" | "right" | "center";
-  /** Additional top offset in viewport percentage */
   offsetY?: string;
 }
 
@@ -19,25 +16,63 @@ export function GhostText({ text, speed = 0.5, align = "left", offsetY = "15%" }
   useEffect(() => {
     if (!ref.current) return;
 
+    const el = ref.current;
+    const parent = el.closest("section") || el.parentElement;
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReducedMotion) return;
+
+    if (prefersReducedMotion) {
+      gsap.set(el, { opacity: 0.14 });
+      return;
+    }
 
     const ctx = gsap.context(() => {
+      // ── Scroll parallax ──
       gsap.fromTo(
-        ref.current,
+        el,
         { y: 150 * speed },
         {
           y: -150 * speed,
           ease: "none",
           scrollTrigger: {
-            trigger: ref.current!.parentElement,
+            trigger: parent,
             start: "top bottom",
             end: "bottom top",
             scrub: true,
           },
         }
       );
-    }, ref);
+
+      // ── Opacity breathe on scroll ──
+      gsap.fromTo(
+        el,
+        { opacity: 0.12 },
+        {
+          opacity: 0.16,
+          ease: "none",
+          scrollTrigger: {
+            trigger: parent,
+            start: "top bottom",
+            end: "center center",
+            scrub: true,
+          },
+        }
+      );
+
+      gsap.fromTo(
+        el,
+        { opacity: 0.16 },
+        {
+          opacity: 0.12,
+          ease: "none",
+          scrollTrigger: {
+            trigger: parent,
+            start: "center center",
+            end: "bottom top",
+            scrub: true,
+          },
+        }
+      );
+    }, el);
 
     return () => ctx.revert();
   }, [speed]);
@@ -56,7 +91,7 @@ export function GhostText({ text, speed = 0.5, align = "left", offsetY = "15%" }
       style={{
         top: offsetY,
         color: "var(--text)",
-        opacity: 0.03,
+        opacity: 0.18,
         fontSize: "clamp(8rem, 20vw, 18rem)",
         fontFamily: "var(--font-display)",
         fontWeight: 700,

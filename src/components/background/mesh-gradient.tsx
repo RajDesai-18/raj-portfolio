@@ -17,7 +17,7 @@ export function MeshGradient() {
         width="100%"
         height="100%"
         colors={colors}
-        speed={0.15}
+        speed={0.8}
         distortion={0.4}
         swirl={0.05}
         grainMixer={0}

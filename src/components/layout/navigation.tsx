@@ -1,6 +1,6 @@
 "use client";
 
-import { useTheme } from "@/components/providers/theme-provider";
+import { useEffect, useRef, useState } from "react";
 import { Magnetic } from "@/components/ui/magnetic";
 import { ScrambleText } from "@/components/ui/scramble-text";
 
@@ -9,12 +9,46 @@ interface NavigationProps {
 }
 
 export function Navigation({ visible = true }: NavigationProps) {
-  const { theme } = useTheme();
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
+  const ticking = useRef(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (ticking.current) return;
+      ticking.current = true;
+
+      requestAnimationFrame(() => {
+        const currentY = window.scrollY;
+        const threshold = 100;
+
+        if (currentY < threshold) {
+          // Always show at top of page
+          setHidden(false);
+        } else if (currentY > lastScrollY.current + 5) {
+          // Scrolling down — hide
+          setHidden(true);
+        } else if (currentY < lastScrollY.current - 5) {
+          // Scrolling up — show
+          setHidden(false);
+        }
+
+        lastScrollY.current = currentY;
+        ticking.current = false;
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 pointer-events-none transition-opacity duration-700"
-      style={{ opacity: visible ? 1 : 0 }}
+      className="fixed top-0 left-0 right-0 z-50 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: hidden ? "translateY(-100%)" : "translateY(0%)",
+      }}
     >
       <div className="w-full px-16 pt-8 flex items-start justify-between">
         {/* Logo mark with magnetic pull */}
@@ -54,7 +88,7 @@ export function Navigation({ visible = true }: NavigationProps) {
             </a>
           ))}
         </div>
-      </div>
-    </nav>
+      </div >
+    </nav >
   );
 }
