@@ -9,6 +9,7 @@ import { Container } from "@/components/layout/container";
 import { SectionLabel } from "@/components/layout/section-label";
 import { AboutSection } from "@/components/sections/about-section";
 import { GhostText } from "@/components/background/ghost-text";
+import { SkillsSection } from "@/components/sections/skills-section";
 
 export default function Home() {
   const hasChecked = useRef(false);
@@ -35,15 +36,7 @@ export default function Home() {
       <AboutSection />
 
       {/* ─── Skills ─── */}
-      <Section id="skills" fullHeight className="relative overflow-hidden">
-        <GhostText text="SKILLS" align="left" speed={0.6} offsetY="10%" />
-        <Container className="relative" style={{ zIndex: 1 }}>
-          <SectionLabel number="02">What I Do</SectionLabel>
-          <p className="font-mono text-sm" style={{ color: "var(--text-muted)" }}>
-            Skills section -- Phase 5
-          </p>
-        </Container>
-      </Section>
+      <SkillsSection />
 
       {/* ─── Work ─── */}
       <Section id="work" className="relative overflow-hidden py-[15vh]">
