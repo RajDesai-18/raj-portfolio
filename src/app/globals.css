@@ -497,3 +497,187 @@ button:hover,
     opacity 0.4s ease 0.15s,
     transform 0.4s ease 0.15s;
 }
+
+/* ───────────────────────────────────────────
+   Projects Section — Magazine Editorial
+   ─────────────────────────────────────────── */
+
+/* Character reveal for project names */
+.project-char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* Tech pills — subtle border, hover accent */
+.project-pill {
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.project-pill:hover {
+  border-color: var(--accent-raw) !important;
+  color: var(--accent-raw) !important;
+  background-color: var(--surface);
+}
+
+/* "Why I built it" expand */
+.project-why-expand {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.project-why-expand[data-expanded="true"] {
+  grid-template-rows: 1fr;
+}
+
+.project-why-expand>div {
+  overflow: hidden;
+}
+
+.project-why-reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.3s ease 0s,
+    transform 0.3s ease 0s;
+}
+
+.project-why-expand[data-expanded="true"] .project-why-reveal {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.35s ease 0.1s,
+    transform 0.35s ease 0.1s;
+}
+
+/* Project links — underline on hover */
+.project-link {
+  position: relative;
+}
+
+.project-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background-color: var(--accent-raw);
+  transition: width 0.3s ease;
+}
+
+.project-link:hover::after {
+  width: 100%;
+}
+
+/* 3D Tilt card */
+.project-tilt-card {
+  will-change: transform;
+  cursor: none;
+}
+
+@media (pointer: coarse) {
+  .project-tilt-card {
+    cursor: pointer;
+  }
+}
+
+/* Cursor: hide default on project images */
+[data-cursor-view] {
+  cursor: none;
+}
+
+@media (pointer: coarse) {
+  [data-cursor-view] {
+    cursor: pointer;
+  }
+}
+
+/* ───────────────────────────────────────────
+   PR Sensei Thumbnail
+   ─────────────────────────────────────────── */
+@keyframes pr-cursor-blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes pr-node-pulse {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 14px var(--accent-glow),
+      0 0 28px rgba(127, 175, 155, 0.08);
+    transform: scale(1);
+  }
+
+  50% {
+    box-shadow:
+      0 0 20px var(--accent-glow),
+      0 0 40px rgba(127, 175, 155, 0.12);
+    transform: scale(1.08);
+  }
+}
+
+/* ───────────────────────────────────────────
+   LLM Cookbook Thumbnail
+   ─────────────────────────────────────────── */
+@keyframes llm-dot-pulse {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 10px var(--accent-raw),
+      0 0 24px var(--accent-glow);
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    box-shadow:
+      0 0 16px var(--accent-raw),
+      0 0 36px var(--accent-glow);
+    transform: translate(-50%, -50%) scale(1.25);
+  }
+}
+
+/* All icons pulse subtly during sweep (searching) */
+@keyframes llm-icon-pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.06);
+    opacity: 0.7;
+  }
+}
+
+/* Matched cluster icon glows after sweep */
+@keyframes llm-icon-glow {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 14px var(--accent-glow),
+      0 0 28px rgba(127, 175, 155, 0.06);
+  }
+
+  50% {
+    box-shadow:
+      0 0 22px var(--accent-glow),
+      0 0 40px rgba(127, 175, 155, 0.1);
+  }
+}

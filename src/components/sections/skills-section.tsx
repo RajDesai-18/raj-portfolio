@@ -6,14 +6,33 @@ import { Container } from "@/components/layout/container";
 import { SectionLabel } from "@/components/layout/section-label";
 import { SKILLS } from "@/lib/skills-data";
 
+// ── Sticky float: holds at each panel, fast transitions between ──
+function stickyFloat(innerProgress: number, count: number): number {
+    const segments = count - 1;
+    const raw = innerProgress * segments;
+    const idx = Math.min(Math.floor(raw), segments - 1);
+    const frac = raw - idx;
+
+    // 65% hold, 35% transition
+    const holdPortion = 0.65;
+
+    if (frac <= holdPortion) {
+        return idx;
+    }
+
+    const transT = (frac - holdPortion) / (1 - holdPortion);
+    const eased = transT * transT * (3 - 2 * transT);
+    return idx + eased;
+}
+
 // ── Math-driven width interpolation ──
 function calcPanelWidths(progress: number, count: number): number[] {
     const expandedW = 52;
     const compressedW = (100 - expandedW) / (count - 1);
     const baseW = 100 / count;
 
-    const entryZone = 0.08;
-    const exitZone = 0.08;
+    const entryZone = 0.06;
+    const exitZone = 0.04;
 
     if (progress <= entryZone) {
         const t = progress / entryZone;
@@ -31,24 +50,32 @@ function calcPanelWidths(progress: number, count: number): number[] {
     }
 
     const innerProgress = (progress - entryZone) / (1 - entryZone - exitZone);
-    const activeFloat = innerProgress * (count - 1);
+    const activeFloat = stickyFloat(innerProgress, count);
+
+    // Interpolate between two valid panel states
+    // This guarantees widths always sum to 100%
+    const lower = Math.floor(activeFloat);
+    const upper = Math.min(lower + 1, count - 1);
+    const blend = activeFloat - lower;
 
     return Array.from({ length: count }, (_, i) => {
-        const distance = Math.abs(activeFloat - i);
-        const weight = Math.max(0, 1 - distance);
-        const easedWeight = weight * weight * (3 - 2 * weight);
-        return compressedW + (expandedW - compressedW) * easedWeight;
+        if (lower === upper) {
+            return i === lower ? expandedW : compressedW;
+        }
+        const lowerW = i === lower ? expandedW : compressedW;
+        const upperW = i === upper ? expandedW : compressedW;
+        return lowerW + (upperW - lowerW) * blend;
     });
 }
 
 function getActiveIndex(progress: number, count: number): number {
-    if (progress <= 0.04) return -1;
-    const entryZone = 0.08;
-    const exitZone = 0.08;
+    if (progress <= 0.03) return -1;
+    const entryZone = 0.06;
+    const exitZone = 0.04;
     if (progress <= entryZone) return 0;
     if (progress >= 1 - exitZone) return count - 1;
     const innerProgress = (progress - entryZone) / (1 - entryZone - exitZone);
-    return Math.round(innerProgress * (count - 1));
+    return Math.round(stickyFloat(innerProgress, count));
 }
 
 export function SkillsSection() {
