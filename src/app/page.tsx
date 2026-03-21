@@ -11,6 +11,8 @@ import { AboutSection } from "@/components/sections/about-section";
 import { GhostText } from "@/components/background/ghost-text";
 import { SkillsSection } from "@/components/sections/skills-section";
 import { ProjectsSection } from "@/components/sections/project-section";
+import { ExperienceSection } from "@/components/sections/experience-section";
+import { EducationSection } from "@/components/sections/education-section";
 
 export default function Home() {
   const hasChecked = useRef(false);
@@ -43,21 +45,16 @@ export default function Home() {
       <ProjectsSection />
 
       {/* ─── Experience ─── */}
-      <Section id="experience" fullHeight className="relative overflow-hidden">
-        <GhostText text="EXP" align="left" speed={0.5} offsetY="12%" />
-        <Container className="relative" style={{ zIndex: 1 }}>
-          <SectionLabel number="04">Experience</SectionLabel>
-          <p className="font-mono text-sm" style={{ color: "var(--text-muted)" }}>
-            Timeline -- Phase 7
-          </p>
-        </Container>
-      </Section>
+      <ExperienceSection />
+
+      {/* ─── Education ─── */}
+      <EducationSection />
 
       {/* ─── Contact ─── */}
       <Section id="contact" fullHeight className="relative overflow-hidden">
         <GhostText text="SAY HI" align="center" speed={0.45} offsetY="5%" />
         <Container narrow className="relative" style={{ zIndex: 1 }}>
-          <SectionLabel number="05">Contact</SectionLabel>
+          <SectionLabel number="06">Contact</SectionLabel>
           <p className="font-body text-lg" style={{ color: "var(--text)" }}>
             Got something interesting to build, discuss, or explore? I&apos;d love to hear from you.
           </p>
