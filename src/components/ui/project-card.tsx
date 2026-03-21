@@ -8,6 +8,7 @@ import { Github, ArrowUpRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { PrSenseiThumbnail } from "@/components/ui/pr-sensei-thumbnail";
 import { LlmCookbookThumbnail } from "@/components/ui/llm-cookbook-thumbnail";
+import { FinancialSaasThumbnail } from "@/components/ui/financial-saas-thumbnail";
 
 interface ProjectCardProps {
     project: Project;
@@ -154,6 +155,7 @@ function ThumbnailContent({
 
     if (project.id === "pr-sensei") return <PrSenseiThumbnail />;
     if (project.id === "llm-cookbook") return <LlmCookbookThumbnail />;
+    if (project.id === "financial-saas") return <FinancialSaasThumbnail />;
 
     return (
         <div
