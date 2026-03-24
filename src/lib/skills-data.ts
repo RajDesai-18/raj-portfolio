@@ -45,8 +45,7 @@ export const SKILLS: Skill[] = [
     id: "backend",
     number: "03",
     name: "BACKEND",
-    description:
-      "Designing scalable APIs, async pipelines, and multi-tenant data architectures.",
+    description: "Designing scalable APIs, async pipelines, and multi-tenant data architectures.",
     pills: [
       "Node.js",
       "Express.js",
@@ -79,13 +78,6 @@ export const SKILLS: Skill[] = [
     name: "MOBILE",
     description:
       "Shipping cross-platform mobile experiences with native performance and structured debugging.",
-    pills: [
-      "Flutter",
-      "Dart",
-      "Firebase",
-      "REST APIs",
-      "CI/CD",
-      "Cross-platform",
-    ],
+    pills: ["Flutter", "Dart", "Firebase", "REST APIs", "CI/CD", "Cross-platform"],
   },
 ];

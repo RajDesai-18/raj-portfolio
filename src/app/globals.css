@@ -478,7 +478,7 @@ button:hover,
   grid-template-rows: 1fr;
 }
 
-.skill-mobile-expand>div {
+.skill-mobile-expand > div {
   overflow: hidden;
 }
 
@@ -533,7 +533,7 @@ button:hover,
   grid-template-rows: 1fr;
 }
 
-.project-why-expand>div {
+.project-why-expand > div {
   overflow: hidden;
 }
 
@@ -600,7 +600,6 @@ button:hover,
    PR Sensei Thumbnail
    ─────────────────────────────────────────── */
 @keyframes pr-cursor-blink {
-
   0%,
   100% {
     opacity: 1;
@@ -612,7 +611,6 @@ button:hover,
 }
 
 @keyframes pr-node-pulse {
-
   0%,
   100% {
     box-shadow:
@@ -633,7 +631,6 @@ button:hover,
    LLM Cookbook Thumbnail
    ─────────────────────────────────────────── */
 @keyframes llm-dot-pulse {
-
   0%,
   100% {
     box-shadow:
@@ -652,7 +649,6 @@ button:hover,
 
 /* All icons pulse subtly during sweep (searching) */
 @keyframes llm-icon-pulse {
-
   0%,
   100% {
     transform: scale(1);
@@ -667,7 +663,6 @@ button:hover,
 
 /* Matched cluster icon glows after sweep */
 @keyframes llm-icon-glow {
-
   0%,
   100% {
     box-shadow:
@@ -686,7 +681,6 @@ button:hover,
    Financial SaaS Thumbnail
    ─────────────────────────────────────────── */
 @keyframes fin-pulse {
-
   0%,
   100% {
     box-shadow: 0 0 4px var(--accent-raw);
@@ -694,7 +688,9 @@ button:hover,
   }
 
   50% {
-    box-shadow: 0 0 8px var(--accent-raw), 0 0 16px var(--accent-glow);
+    box-shadow:
+      0 0 8px var(--accent-raw),
+      0 0 16px var(--accent-glow);
     transform: scale(1.3);
   }
 }
@@ -738,4 +734,193 @@ button:hover,
     transform: scale(1.5);
     opacity: 0.3;
   }
+}
+
+/* ───────────────────────────────────────────
+   Contact Section — Form Fields
+   ─────────────────────────────────────────── */
+.contact-field {
+  background-color: var(--surface);
+  border: 1px solid var(--border-custom);
+  color: var(--text);
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.contact-field::placeholder {
+  color: var(--text-muted);
+  font-family: var(--font-body);
+}
+
+.contact-field:focus {
+  border-color: var(--accent-raw);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  background-color: transparent;
+}
+
+.contact-field:hover:not(:focus) {
+  border-color: rgba(239, 230, 216, 0.2);
+}
+
+.light .contact-field:hover:not(:focus) {
+  border-color: rgba(43, 30, 23, 0.18);
+}
+
+/* SplitText word reveal */
+.contact-word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* ───────────────────────────────────────────
+   Contact Section — Submit Button
+   ─────────────────────────────────────────── */
+.contact-submit {
+  cursor: pointer;
+}
+
+.contact-submit:hover:not(:disabled) {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.contact-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* ───────────────────────────────────────────
+   Contact Section — Link Strips
+   ─────────────────────────────────────────── */
+.contact-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border-custom);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  transition: padding 0.3s ease;
+}
+
+.contact-strip:first-child {
+  border-top: none;
+}
+
+/* Accent background sweep on hover */
+.contact-strip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--accent-raw);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: 0;
+}
+
+.contact-strip:hover::before {
+  transform: scaleX(1);
+}
+
+.contact-strip:hover {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* Raise content above sweep */
+.contact-strip>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* Number */
+.contact-strip-num {
+  color: var(--text-muted);
+  transition: color 0.35s ease;
+}
+
+.contact-strip:hover .contact-strip-num {
+  color: var(--bg);
+  opacity: 0.6;
+}
+
+/* Name */
+.contact-strip-name {
+  color: var(--text);
+  transition: color 0.35s ease;
+}
+
+.contact-strip:hover .contact-strip-name {
+  color: var(--bg);
+}
+
+/* Icon */
+.contact-strip:hover .contact-strip-icon {
+  color: var(--bg) !important;
+}
+
+/* Arrow */
+.contact-strip-arrow {
+  transition:
+    color 0.35s ease,
+    transform 0.35s ease;
+}
+
+.contact-strip:hover .contact-strip-arrow {
+  color: var(--bg) !important;
+  transform: translateX(8px);
+}
+
+/* Focus-visible for keyboard navigation */
+.contact-strip:focus-visible {
+  outline: 2px solid var(--accent-raw);
+  outline-offset: -2px;
+  border-radius: 4px;
+}
+
+/* ───────────────────────────────────────────
+   Sonner Toast — Custom Theme
+   ─────────────────────────────────────────── */
+.contact-toast {
+  background-color: var(--surface);
+  border: 1px solid var(--border-custom);
+  color: var(--text);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.contact-toast[data-type="success"] {
+  border-left: 3px solid var(--accent-raw);
+}
+
+.contact-toast[data-type="error"] {
+  border-left: 3px solid #e4572e;
+}
+
+.contact-toast[data-type="success"] svg {
+  color: var(--accent-raw);
+}
+
+.contact-toast[data-type="error"] svg {
+  color: #e4572e;
+}
+
+/* ───────────────────────────────────────────
+   Footer — Back to Top Button
+   ─────────────────────────────────────────── */
+.footer-top-btn:hover {
+  border-color: var(--accent-raw) !important;
+  color: var(--accent-raw) !important;
+  background-color: var(--accent-glow);
+}
+
+.footer-top-btn:active {
+  transform: scale(0.95);
 }

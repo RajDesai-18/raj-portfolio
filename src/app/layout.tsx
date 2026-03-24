@@ -5,6 +5,7 @@ import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provi
 import { CustomCursor } from "@/components/ui/custom-cursor";
 import { MeshGradient } from "@/components/background/mesh-gradient";
 import { FloatingThemeToggle } from "@/components/ui/floating-theme-toggle";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Raj Desai — Software Engineer",
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <main className="relative" style={{ zIndex: 1 }}>
               {children}
             </main>
+            <Toaster />
           </SmoothScrollProvider>
         </ThemeProvider>
       </body>

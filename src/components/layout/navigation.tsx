@@ -88,7 +88,7 @@ export function Navigation({ visible = true }: NavigationProps) {
             </a>
           ))}
         </div>
-      </div >
-    </nav >
+      </div>
+    </nav>
   );
 }
