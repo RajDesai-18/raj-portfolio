@@ -65,7 +65,7 @@ export function MeshGradient() {
   }
 
   return (
-    <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }} aria-hidden="true">
+    <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0, border: "2px solid red" }} aria-hidden="true">
       <MeshGradientShader
         width="100%"
         height="100%"
