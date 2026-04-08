@@ -306,14 +306,17 @@ export function CareerSection({ id, entries }: CareerSectionProps) {
                         opacity: 0.7,
                         fontSize: "var(--text-body)",
                         marginBottom: "clamp(16px, 2vw, 24px)",
-                        maxWidth: "990px",
+                        maxWidth: "clamp(680px, 50vw, 960px)",
                       }}
                     >
                       {entry.summary}
                     </p>
 
                     {/* Bullet points */}
-                    <div className="flex flex-col gap-[8px]" style={{ maxWidth: "840px" }}>
+                    <div
+                      className="flex flex-col gap-[8px]"
+                      style={{ maxWidth: "clamp(680px, 50vw, 960px)" }}
+                    >
                       {entry.bullets.map((bullet, bi) => (
                         <div key={bi} className="career-bullet flex gap-[10px] items-baseline">
                           <span
