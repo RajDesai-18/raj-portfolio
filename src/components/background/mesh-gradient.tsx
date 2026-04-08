@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useTheme } from "@/components/providers/theme-provider";
-import { usePerformanceTier } from "@/hooks/use-performance-tier";
 
 const DARK_COLORS = ["#0D0D0D", "#2C2620", "#181614", "#352F28"];
 const LIGHT_COLORS = ["#F2E7DC", "#BFAD96", "#DDD0C0", "#A89880"];
@@ -14,7 +15,6 @@ const MeshGradientShader = dynamic(
 
 function CSSGradientFallback({ theme }: { theme: string }) {
   const isDark = theme === "dark";
-
   return (
     <div
       className="fixed inset-0 pointer-events-none"
@@ -57,15 +57,26 @@ function CSSGradientFallback({ theme }: { theme: string }) {
 
 export function MeshGradient() {
   const { theme } = useTheme();
-  const tier = usePerformanceTier();
+  const [useWebGL, setUseWebGL] = useState(false);
   const colors = theme === "dark" ? DARK_COLORS : LIGHT_COLORS;
 
-  if (tier === "low") {
+  useEffect(() => {
+    // Only check if WebGL is available, skip aggressive hardware checks
+    try {
+      const canvas = document.createElement("canvas");
+      const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+      if (gl) setUseWebGL(true);
+    } catch {
+      // fallback to CSS
+    }
+  }, []);
+
+  if (!useWebGL) {
     return <CSSGradientFallback theme={theme} />;
   }
 
   return (
-    <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0, border: "2px solid red" }} aria-hidden="true">
+    <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }} aria-hidden="true">
       <MeshGradientShader
         width="100%"
         height="100%"
