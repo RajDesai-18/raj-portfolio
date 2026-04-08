@@ -1,16 +1,8 @@
 # Raj Desai — Portfolio
 
-Personal portfolio website. Designed and built by Raj Desai.
+**[rajdesai.io](https://rajdesai.io)**
 
-**[rajdesai.com](https://rajdesai.com)** (coming soon)
-
----
-
-Software Engineer · UTD '26
-
-Designing & building **good shit** since 2023.
-
----
+Designed and built by Raj Desai.
 
 ## Built With
 
@@ -18,7 +10,7 @@ Next.js 16 · TypeScript · Tailwind CSS v4 · GSAP · Framer Motion · Lenis ·
 
 ## Fonts
 
-Clash Display · Satoshi · Azeret Mono — all from [Fontshare](https://fontshare.com)
+Clash Display · Satoshi · Azeret Mono — [Fontshare](https://fontshare.com)
 
 ## License
 

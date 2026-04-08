@@ -9,11 +9,11 @@ import Image from "next/image";
 import { PrSenseiThumbnail } from "@/components/ui/pr-sensei-thumbnail";
 import { LlmCookbookThumbnail } from "@/components/ui/llm-cookbook-thumbnail";
 import { FinancialSaasThumbnail } from "@/components/ui/financial-saas-thumbnail";
+import { AnimatedThumbnail } from "@/components/ui/animated-thumbnail";
 
 interface ProjectCardProps {
   project: Project;
   direction: "left" | "right";
-  /** Override vertical position of the bleed number */
   numberOffsetY?: string;
 }
 
@@ -24,11 +24,8 @@ function TechPills({ pills }: { pills: string[] }) {
       {pills.map((pill) => (
         <span
           key={pill}
-          className="project-pill font-mono text-[0.6875rem] tracking-[0.04em] px-3 py-1.5"
-          style={{
-            color: "var(--text-muted)",
-            border: "1px solid var(--border-custom)",
-          }}
+          className="project-pill font-mono text-[0.625rem] sm:text-[0.6875rem] xl:text-[0.75rem] tracking-[0.04em] px-2.5 sm:px-3 py-1 sm:py-1.5"
+          style={{ color: "var(--text-muted)", border: "1px solid var(--border-custom)" }}
         >
           {pill}
         </span>
@@ -40,13 +37,13 @@ function TechPills({ pills }: { pills: string[] }) {
 // ── Project links ──
 function ProjectLinks({ project }: { project: Project }) {
   return (
-    <div className="flex items-center gap-6">
+    <div className="flex items-center gap-4 sm:gap-6">
       {project.links.live && (
         <a
           href={project.links.live}
           target="_blank"
           rel="noopener noreferrer"
-          className="project-link group flex items-center gap-2 font-mono text-[0.75rem] uppercase tracking-[0.1em] transition-colors duration-300"
+          className="project-link group flex items-center gap-2 font-mono text-[0.6875rem] sm:text-[0.75rem] xl:text-[0.8125rem] uppercase tracking-[0.1em] transition-colors duration-300"
           style={{ color: "var(--text-muted)" }}
           onMouseEnter={(e) => {
             e.currentTarget.style.color = "var(--accent-raw)";
@@ -63,7 +60,7 @@ function ProjectLinks({ project }: { project: Project }) {
         href={project.links.github}
         target="_blank"
         rel="noopener noreferrer"
-        className="project-link group flex items-center gap-2 font-mono text-[0.75rem] uppercase tracking-[0.1em] transition-colors duration-300"
+        className="project-link group flex items-center gap-2 font-mono text-[0.6875rem] sm:text-[0.75rem] xl:text-[0.8125rem] uppercase tracking-[0.1em] transition-colors duration-300"
         style={{ color: "var(--text-muted)" }}
         onMouseEnter={(e) => {
           e.currentTarget.style.color = "var(--accent-raw)";
@@ -82,20 +79,17 @@ function ProjectLinks({ project }: { project: Project }) {
 // ── "Why I built it" expandable ──
 function WhyBuiltIt({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
-
   return (
-    <div className="mt-6">
+    <div className="mt-5 sm:mt-6">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="flex items-center gap-2 font-mono text-[0.75rem] uppercase tracking-[0.12em] transition-colors duration-300 cursor-pointer"
+        className="flex items-center gap-2 font-mono text-[0.6875rem] sm:text-[0.75rem] xl:text-[0.8125rem] uppercase tracking-[0.12em] transition-colors duration-300 cursor-pointer"
         style={{ color: "var(--accent-raw)" }}
       >
         <ChevronDown
           size={12}
           className="transition-transform duration-300"
-          style={{
-            transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
-          }}
+          style={{ transform: expanded ? "rotate(180deg)" : "rotate(0deg)" }}
         />
         Why I built it
       </button>
@@ -103,10 +97,7 @@ function WhyBuiltIt({ text }: { text: string }) {
         <div>
           <p
             className="project-why-reveal pt-4 font-body font-medium leading-[1.55] tracking-[-0.005em] max-w-145"
-            style={{
-              color: "var(--text-muted)",
-              fontSize: "clamp(1.0625rem, 1.8vw, 1.25rem)",
-            }}
+            style={{ color: "var(--text-muted)", fontSize: "clamp(0.9375rem, 1.8vw, 1.5rem)" }}
           >
             {text}
           </p>
@@ -116,46 +107,47 @@ function WhyBuiltIt({ text }: { text: string }) {
   );
 }
 
-// ── Thumbnail content (image, custom component, or placeholder) ──
-function ThumbnailContent({ project, imageHovered }: { project: Project; imageHovered: boolean }) {
+// ── Desktop thumbnail (image, custom component, or placeholder) ──
+function DesktopThumbnail({ project, imageHovered }: { project: Project; imageHovered: boolean }) {
   if (project.image) {
     return (
       <div
         className="relative overflow-hidden rounded-xl"
-        style={{
-          border: "1px solid var(--border-custom)",
-          aspectRatio: "16 / 10",
-        }}
+        style={{ border: "1px solid var(--border-custom)", aspectRatio: "16 / 10" }}
       >
         <Image
           src={project.image.src}
           alt={project.image.alt}
           fill
           className="object-cover transition-all duration-700 ease-out"
-          sizes="(max-width: 768px) 100vw, 60vw"
+          sizes="(max-width: 1280px) 60vw, 55vw"
           priority={false}
-          style={{
-            filter: imageHovered
-              ? "grayscale(0%) brightness(1) contrast(1)"
-              : "grayscale(100%) brightness(0.85) contrast(1.1)",
-          }}
         />
       </div>
     );
   }
-
-  if (project.id === "pr-sensei") return <PrSenseiThumbnail />;
-  if (project.id === "llm-cookbook") return <LlmCookbookThumbnail />;
-  if (project.id === "financial-saas") return <FinancialSaasThumbnail />;
-
+  if (project.id === "pr-sensei")
+    return (
+      <AnimatedThumbnail>
+        <PrSenseiThumbnail />
+      </AnimatedThumbnail>
+    );
+  if (project.id === "llm-cookbook")
+    return (
+      <AnimatedThumbnail>
+        <LlmCookbookThumbnail />
+      </AnimatedThumbnail>
+    );
+  if (project.id === "financial-saas")
+    return (
+      <AnimatedThumbnail>
+        <FinancialSaasThumbnail />
+      </AnimatedThumbnail>
+    );
   return (
     <div
       className="relative overflow-hidden rounded-xl"
-      style={{
-        border: "1px solid var(--border-custom)",
-        aspectRatio: "16 / 10",
-        background: "transparent",
-      }}
+      style={{ border: "1px solid var(--border-custom)", aspectRatio: "16 / 10" }}
     >
       <div className="absolute inset-0 flex items-center justify-center">
         <span
@@ -167,6 +159,41 @@ function ThumbnailContent({ project, imageHovered }: { project: Project; imageHo
       </div>
     </div>
   );
+}
+
+// ── Mobile thumbnail — renders directly, no nesting issues ──
+function MobileThumbnail({ project }: { project: Project }) {
+  if (project.image) {
+    return (
+      <Image
+        src={project.image.src}
+        alt={project.image.alt}
+        fill
+        className="object-cover"
+        sizes="100vw"
+        priority={false}
+      />
+    );
+  }
+  if (project.id === "pr-sensei")
+    return (
+      <AnimatedThumbnail aspectRatio="4/3">
+        <PrSenseiThumbnail />
+      </AnimatedThumbnail>
+    );
+  if (project.id === "llm-cookbook")
+    return (
+      <AnimatedThumbnail aspectRatio="4/3">
+        <LlmCookbookThumbnail />
+      </AnimatedThumbnail>
+    );
+  if (project.id === "financial-saas")
+    return (
+      <AnimatedThumbnail aspectRatio="4/3">
+        <FinancialSaasThumbnail />
+      </AnimatedThumbnail>
+    );
+  return null;
 }
 
 // ══════════════════════════════════════════════
@@ -182,23 +209,14 @@ export function ProjectCard({ project, direction, numberOffsetY }: ProjectCardPr
   const quoteRef = useRef<HTMLDivElement>(null);
   const pillsRef = useRef<HTMLDivElement>(null);
   const linksRef = useRef<HTMLDivElement>(null);
-
   const [imageHovered, setImageHovered] = useState(false);
 
-  // ── 3D Tilt ──
+  // ── 3D Tilt (desktop only) ──
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!tiltRef.current) return;
-    if (window.matchMedia("(pointer: coarse)").matches) return;
-
+    if (!tiltRef.current || window.matchMedia("(pointer: coarse)").matches) return;
     const rect = tiltRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const rotateY = ((x - centerX) / centerX) * 3;
-    const rotateX = ((centerY - y) / centerY) * 3;
-
+    const rotateY = ((e.clientX - rect.left - rect.width / 2) / (rect.width / 2)) * 3;
+    const rotateX = ((rect.height / 2 - (e.clientY - rect.top)) / (rect.height / 2)) * 3;
     gsap.to(tiltRef.current, {
       rotateX,
       rotateY,
@@ -211,7 +229,6 @@ export function ProjectCard({ project, direction, numberOffsetY }: ProjectCardPr
   const handleMouseLeave = useCallback(() => {
     if (!tiltRef.current) return;
     setImageHovered(false);
-
     gsap.to(tiltRef.current, {
       rotateX: 0,
       rotateY: 0,
@@ -228,9 +245,7 @@ export function ProjectCard({ project, direction, numberOffsetY }: ProjectCardPr
   // ── Scroll animations ──
   useEffect(() => {
     if (!cardRef.current || !nameRef.current) return;
-
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     if (prefersReducedMotion) {
       gsap.set([imageWrapRef.current, quoteRef.current, pillsRef.current, linksRef.current], {
         opacity: 1,
@@ -241,11 +256,7 @@ export function ProjectCard({ project, direction, numberOffsetY }: ProjectCardPr
       return;
     }
 
-    const split = new SplitText(nameRef.current, {
-      type: "chars",
-      charsClass: "project-char",
-    });
-
+    const split = new SplitText(nameRef.current, { type: "chars", charsClass: "project-char" });
     const imageFromX = direction === "left" ? -40 : 40;
 
     const ctx = gsap.context(() => {
@@ -265,7 +276,6 @@ export function ProjectCard({ project, direction, numberOffsetY }: ProjectCardPr
           },
         }
       );
-
       gsap.fromTo(
         imageInnerRef.current,
         { y: 40 },
@@ -280,7 +290,6 @@ export function ProjectCard({ project, direction, numberOffsetY }: ProjectCardPr
           },
         }
       );
-
       gsap.fromTo(
         numberRef.current,
         { opacity: 0, scale: 0.95 },
@@ -296,7 +305,6 @@ export function ProjectCard({ project, direction, numberOffsetY }: ProjectCardPr
           },
         }
       );
-
       gsap.fromTo(
         numberRef.current,
         { y: 60 },
@@ -311,7 +319,6 @@ export function ProjectCard({ project, direction, numberOffsetY }: ProjectCardPr
           },
         }
       );
-
       gsap.fromTo(
         split.chars,
         { opacity: 0, y: 40 },
@@ -328,7 +335,6 @@ export function ProjectCard({ project, direction, numberOffsetY }: ProjectCardPr
           },
         }
       );
-
       gsap.fromTo(
         quoteRef.current,
         { opacity: 0, y: 24 },
@@ -344,7 +350,6 @@ export function ProjectCard({ project, direction, numberOffsetY }: ProjectCardPr
           },
         }
       );
-
       if (pillsRef.current) {
         const pillEls = pillsRef.current.querySelectorAll(".project-pill");
         gsap.fromTo(
@@ -364,7 +369,6 @@ export function ProjectCard({ project, direction, numberOffsetY }: ProjectCardPr
           }
         );
       }
-
       gsap.fromTo(
         linksRef.current,
         { opacity: 0 },
@@ -390,20 +394,16 @@ export function ProjectCard({ project, direction, numberOffsetY }: ProjectCardPr
   const isLeft = direction === "left";
 
   return (
-    <div ref={cardRef} className="relative mb-[15vh] md:mb-[20vh]">
+    <div ref={cardRef} className="relative mb-[8vh] sm:mb-[12vh] md:mb-[20vh]">
       <Container className="relative">
-        {/* ── Bleed number — opposite side of image ── */}
+        {/* ── Desktop bleed number ── */}
         <span
           ref={numberRef}
-          className={`
-            absolute pointer-events-none select-none font-display font-bold
-            leading-[0.85] tracking-[-0.05em] hidden md:block
-            ${isLeft ? "right-[2rem] lg:right-[4rem]" : "left-[2rem] lg:left-[4rem]"}
-          `}
+          className={`absolute pointer-events-none select-none font-display font-bold leading-[0.85] tracking-[-0.05em] hidden md:block ${isLeft ? "right-2 sm:right-4 lg:right-16" : "left-2 sm:left-4 lg:left-16"}`}
           style={{
             color: "var(--text)",
             opacity: 0,
-            fontSize: "clamp(9rem, 20vw, 16rem)",
+            fontSize: "clamp(7rem, 18vw, 20rem)",
             top: numberOffsetY ?? "10%",
           }}
           aria-hidden="true"
@@ -411,67 +411,82 @@ export function ProjectCard({ project, direction, numberOffsetY }: ProjectCardPr
           {project.number}
         </span>
 
-        {/* ── Image wrapper — 60% width ── */}
+        {/* ── Image wrapper ── */}
         <div
           ref={imageWrapRef}
-          className={`
-            relative w-full md:w-[60%]
-            ${isLeft ? "md:mr-auto" : "md:ml-auto"}
-          `}
+          className={`relative w-full md:w-[60%] xl:w-[55%] ${isLeft ? "md:mr-auto" : "md:ml-auto"}`}
           style={{ opacity: 0 }}
         >
-          <div ref={imageInnerRef}>
-            <div style={{ perspective: "800px" }}>
-              <div
-                ref={tiltRef}
-                className="project-tilt-card relative"
-                style={{ transformStyle: "preserve-3d" }}
-                onMouseMove={handleMouseMove}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                data-cursor-view
-              >
-                {/* Thumbnail content (image / custom component / placeholder) */}
-                <ThumbnailContent project={project} imageHovered={imageHovered} />
-
-                {/* ── Universal hover border — works on all thumbnail types ── */}
+          {/* ─ MOBILE: Full-bleed image with name overlay ─ */}
+          <div className="md:hidden -mx-5 sm:-mx-6">
+            <div ref={imageInnerRef}>
+              <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
+                <MobileThumbnail project={project} />
+                {/* Gradient scrim */}
                 <div
-                  className="absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-700"
+                  className="absolute inset-x-0 bottom-0 pointer-events-none"
                   style={{
-                    boxShadow: "inset 0 0 0 1.5px var(--accent-raw)",
-                    opacity: imageHovered ? 1 : 0,
-                    zIndex: 10,
+                    height: "60%",
+                    background:
+                      "linear-gradient(to top, var(--bg) 5%, rgba(31,31,31,0.7) 50%, transparent)",
                   }}
                 />
+                {/* Name + number overlay */}
+                <div className="absolute bottom-0 left-0 right-0 px-5 sm:px-6 pb-3">
+                  <span
+                    className="font-mono text-[0.5rem] tracking-[0.14em] uppercase"
+                    style={{ color: "var(--accent-raw)" }}
+                  >
+                    {project.number}
+                  </span>
+                  <h3
+                    className="font-display font-bold tracking-[-0.04em] leading-[0.85] mt-1"
+                    style={{ color: "var(--text)", fontSize: "clamp(2.25rem, 10vw, 3.5rem)" }}
+                  >
+                    {project.name}
+                  </h3>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Mobile bleed number */}
-          <span
-            className="md:hidden absolute -top-[2.5rem] right-0 pointer-events-none select-none font-display font-bold leading-[0.85] tracking-[-0.05em]"
-            style={{
-              color: "var(--text)",
-              opacity: 0.08,
-              fontSize: "5rem",
-            }}
-            aria-hidden="true"
-          >
-            {project.number}
-          </span>
+          {/* ─ DESKTOP: Standard thumbnail with tilt ─ */}
+          <div className="hidden md:block">
+            <div ref={imageInnerRef}>
+              <div style={{ perspective: "800px" }}>
+                <div
+                  ref={tiltRef}
+                  className="project-tilt-card relative"
+                  style={{ transformStyle: "preserve-3d" }}
+                  onMouseMove={handleMouseMove}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                  data-cursor-view
+                >
+                  <DesktopThumbnail project={project} imageHovered={imageHovered} />
+                  <div
+                    className="absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-700"
+                    style={{
+                      boxShadow: "inset 0 0 0 1.5px var(--accent-raw)",
+                      opacity: imageHovered ? 1 : 0,
+                      zIndex: 10,
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* ── Project name ── */}
+        {/* ── Desktop project name ── */}
         <h3
           ref={nameRef}
-          className={`
-            relative font-display font-bold tracking-[-0.04em] leading-[0.85]
-            -mt-6 md:-mt-14 z-2
-            ${isLeft ? "md:ml-[2%]" : "md:text-right md:mr-[2%]"}
-          `}
+          className={`relative font-display font-bold tracking-[-0.04em] leading-[0.85] hidden md:block -mt-14 z-2 ${isLeft ? "md:ml-[2%]" : "md:text-right md:mr-[2%]"}`}
           style={{
             color: "var(--text)",
-            fontSize: "clamp(3rem, 8vw, 7rem)",
+            fontSize: "clamp(2.25rem, 8vw, 9rem)",
+            WebkitTextStroke: "2px var(--bg)",
+            paintOrder: "stroke fill",
           }}
         >
           {project.name}
@@ -479,38 +494,26 @@ export function ProjectCard({ project, direction, numberOffsetY }: ProjectCardPr
 
         {/* ── Content block ── */}
         <div
-          className={`
-            mt-8 md:mt-10 max-w-140
-            ${isLeft ? "md:ml-[2%]" : "md:ml-auto md:mr-[2%]"}
-          `}
+          className={`mt-4 sm:mt-6 md:mt-10 max-w-140 ${isLeft ? "md:ml-[2%]" : "md:ml-auto md:mr-[2%]"}`}
         >
           <div
             ref={quoteRef}
-            className="pl-5"
-            style={{
-              borderLeft: "2px solid var(--accent-raw)",
-              opacity: 0,
-            }}
+            className="pl-4 sm:pl-5"
+            style={{ borderLeft: "2px solid var(--accent-raw)", opacity: 0 }}
           >
             <p
               className="font-body font-medium leading-[1.55] tracking-[-0.005em]"
-              style={{
-                color: "var(--text)",
-                fontSize: "clamp(1.0625rem, 1.8vw, 1.25rem)",
-              }}
+              style={{ color: "var(--text)", fontSize: "clamp(0.875rem, 1.8vw, 1.5rem)" }}
             >
               {project.oneLiner}
             </p>
           </div>
-
-          <div ref={pillsRef} className="mt-7">
+          <div ref={pillsRef} className="mt-4 sm:mt-5 md:mt-7">
             <TechPills pills={project.pills} />
           </div>
-
-          <div ref={linksRef} className="mt-6" style={{ opacity: 0 }}>
+          <div ref={linksRef} className="mt-4 sm:mt-5 md:mt-6" style={{ opacity: 0 }}>
             <ProjectLinks project={project} />
           </div>
-
           <WhyBuiltIt text={project.whyIBuiltIt} />
         </div>
       </Container>

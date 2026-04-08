@@ -10,8 +10,8 @@ export function Container({ children, narrow = false, className, ...props }: Con
   return (
     <div
       className={cn(
-        "mx-auto w-full px-[64px]",
-        narrow ? "max-w-[840px]" : "max-w-[1512px]",
+        "mx-auto w-full px-5 sm:px-6 md:px-8 lg:px-16",
+        narrow ? "max-w-[840px]" : "",
         className
       )}
       {...props}

@@ -4,11 +4,10 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { ArrowUpRight } from "lucide-react";
 
-// ── Category data ──
 interface Category {
   id: string;
   label: string;
-  chartData: number[]; // normalized 0–1
+  chartData: number[];
   transactions: { merchant: string; amount: number; date: string }[];
 }
 
@@ -16,7 +15,6 @@ const CATEGORIES: Category[] = [
   {
     id: "food",
     label: "Food",
-    // Gentle variation, trending slightly up
     chartData: [
       0.3, 0.35, 0.32, 0.38, 0.36, 0.4, 0.37, 0.42, 0.45, 0.4, 0.43, 0.48, 0.44, 0.5, 0.46, 0.52,
       0.48, 0.55, 0.5, 0.53,
@@ -29,7 +27,6 @@ const CATEGORIES: Category[] = [
   {
     id: "rent",
     label: "Rent",
-    // Flat baseline with monthly spikes
     chartData: [
       0.08, 0.08, 0.08, 0.08, 0.85, 0.1, 0.08, 0.08, 0.08, 0.08, 0.85, 0.1, 0.08, 0.08, 0.08, 0.08,
       0.85, 0.1, 0.08, 0.08,
@@ -39,7 +36,6 @@ const CATEGORIES: Category[] = [
   {
     id: "subs",
     label: "Subscriptions",
-    // Steady low with small regular bumps
     chartData: [
       0.15, 0.16, 0.25, 0.16, 0.15, 0.16, 0.28, 0.16, 0.15, 0.16, 0.24, 0.16, 0.15, 0.16, 0.26,
       0.16, 0.15, 0.16, 0.25, 0.16,
@@ -52,7 +48,6 @@ const CATEGORIES: Category[] = [
   {
     id: "utilities",
     label: "Utilities",
-    // Gentle seasonal curve
     chartData: [
       0.5, 0.54, 0.58, 0.62, 0.66, 0.68, 0.65, 0.6, 0.55, 0.48, 0.42, 0.38, 0.36, 0.38, 0.42, 0.46,
       0.5, 0.52, 0.54, 0.56,
@@ -65,7 +60,6 @@ const CATEGORIES: Category[] = [
   {
     id: "transport",
     label: "Transport",
-    // Gentle ups and downs
     chartData: [
       0.25, 0.28, 0.3, 0.4, 0.45, 0.35, 0.3, 0.32, 0.42, 0.48, 0.38, 0.32, 0.35, 0.44, 0.5, 0.4,
       0.35, 0.42, 0.46, 0.38,
@@ -77,41 +71,24 @@ const CATEGORIES: Category[] = [
   },
 ];
 
-// ── Stats ──
-const STATS = {
-  income: 4820.0,
-  expenses: 2731.47,
-  balance: 16088.62,
-};
-
-// ── Timing ──
+const STATS = { income: 4820.0, expenses: 2731.47, balance: 16088.62 };
 const COUNT_DURATION = 1800;
 const CHART_DRAW_DURATION = 1800;
 const CHART_HOLD = 2200;
 const CHART_FADE = 400;
 const CYCLE_PAUSE = 1200;
 
-// ── Helpers ──
 function fmt(val: number): string {
-  return val.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+  return val.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
-
 function fmtShort(val: number): string {
-  return val.toLocaleString("en-US", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
+  return val.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
-
 function straightPath(points: { x: number; y: number }[]): string {
   return points
     .map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`)
     .join(" ");
 }
-
 function getChartPoints(
   data: number[],
   w: number,
@@ -122,10 +99,7 @@ function getChartPoints(
   const uw = w - px * 2;
   const uh = h - py * 2;
   const step = uw / (data.length - 1);
-  return data.map((v, i) => ({
-    x: px + i * step,
-    y: py + uh * (1 - v),
-  }));
+  return data.map((v, i) => ({ x: px + i * step, y: py + uh * (1 - v) }));
 }
 
 export function FinancialSaasThumbnail() {
@@ -149,34 +123,23 @@ export function FinancialSaasThumbnail() {
     if (chartTimerRef.current) clearInterval(chartTimerRef.current);
   }, []);
 
-  // ── Draw a single category chart, then move to next ──
   const drawCategory = useCallback((catIdx: number) => {
     setActiveCat(catIdx);
     setChartProgress(0);
     setChartOpacity(1);
     setShowTx(false);
-
-    // Show transactions
     timeoutRef.current = setTimeout(() => {
       setShowTx(true);
     }, 200);
-
-    // Draw line
     timeoutRef.current = setTimeout(() => {
       const c0 = Date.now();
       chartTimerRef.current = setInterval(() => {
         const cp = Math.min((Date.now() - c0) / CHART_DRAW_DURATION, 1);
         setChartProgress(1 - Math.pow(1 - cp, 2));
-
         if (cp >= 1) {
           if (chartTimerRef.current) clearInterval(chartTimerRef.current);
-
-          // Hold
           timeoutRef.current = setTimeout(() => {
-            // Fade out line
             setChartOpacity(0);
-
-            // Next category after fade
             timeoutRef.current = setTimeout(() => {
               const nextIdx = (catIdx + 1) % CATEGORIES.length;
               catIndexRef.current = nextIdx;
@@ -191,7 +154,6 @@ export function FinancialSaasThumbnail() {
   useEffect(() => {
     const rm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     setIsReducedMotion(rm);
-
     if (rm) {
       setCounters(STATS);
       setShowConnected(true);
@@ -200,12 +162,9 @@ export function FinancialSaasThumbnail() {
       setShowTx(true);
       return;
     }
-
-    // Phase 1: Count up stats
     timeoutRef.current = setTimeout(() => {
       setShowConnected(true);
       setIsActive(true);
-
       const t0 = Date.now();
       countRef.current = setInterval(() => {
         const p = Math.min((Date.now() - t0) / COUNT_DURATION, 1);
@@ -215,25 +174,18 @@ export function FinancialSaasThumbnail() {
           expenses: STATS.expenses * e,
           balance: STATS.balance * e,
         });
-
         if (p >= 1) {
           if (countRef.current) clearInterval(countRef.current);
-
-          // Phase 2: Start category cycling
           timeoutRef.current = setTimeout(() => {
             drawCategory(0);
           }, 400);
         }
       }, 16);
     }, CYCLE_PAUSE);
-
     return cleanup;
   }, [cleanup, drawCategory]);
 
-  // ── Current category ──
   const cat = CATEGORIES[activeCat];
-
-  // ── Chart geometry ──
   const W = 440;
   const H = 120;
   const PX = 35;
@@ -248,19 +200,21 @@ export function FinancialSaasThumbnail() {
       className="relative w-full overflow-hidden rounded-xl select-none flex flex-col"
       style={{
         aspectRatio: "16 / 10",
-        backgroundColor: "#161616",
+        backgroundColor: "var(--bg)",
         border: "1px solid var(--border-custom)",
       }}
     >
-      {/* ── Dot grid ── */}
+      {/* Dot grid */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: "radial-gradient(circle, rgba(239,230,216,0.02) 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(circle, var(--border-custom) 1px, transparent 1px)",
           backgroundSize: "20px 20px",
+          opacity: 0.3,
         }}
       />
 
+      {/* Glow */}
       <div
         className="absolute pointer-events-none"
         style={{
@@ -276,17 +230,19 @@ export function FinancialSaasThumbnail() {
         }}
       />
 
-      {/* ═══ TOP — Income / Expenses / Balance + Plaid ═══ */}
+      {/* ═══ TOP — Stats + Plaid ═══ */}
       <div className="relative shrink-0 px-4 pt-3.5 pb-2 md:px-5 md:pt-4" style={{ zIndex: 2 }}>
         <div className="flex items-center gap-2.5">
           {/* Income */}
           <div
             className="flex-1 px-3 py-2 rounded-lg"
             style={{
-              backgroundColor: "rgba(127,175,155,0.04)",
+              backgroundColor: "var(--accent-glow)",
+              border: "1px solid var(--accent-raw)",
+              borderColor: "var(--accent-raw)",
               borderWidth: "1px",
               borderStyle: "solid",
-              borderColor: "rgba(127,175,155,0.1)",
+              opacity: 0.9,
             }}
           >
             <span
@@ -318,9 +274,7 @@ export function FinancialSaasThumbnail() {
             className="flex-1 px-3 py-2 rounded-lg"
             style={{
               backgroundColor: "rgba(228,90,90,0.04)",
-              borderWidth: "1px",
-              borderStyle: "solid",
-              borderColor: "rgba(228,90,90,0.1)",
+              border: "1px solid rgba(228,90,90,0.1)",
             }}
           >
             <span
@@ -350,12 +304,7 @@ export function FinancialSaasThumbnail() {
           {/* Balance */}
           <div
             className="flex-1 px-3 py-2 rounded-lg"
-            style={{
-              backgroundColor: "rgba(239,230,216,0.03)",
-              borderWidth: "1px",
-              borderStyle: "solid",
-              borderColor: "rgba(239,230,216,0.06)",
-            }}
+            style={{ backgroundColor: "var(--surface)", border: "1px solid var(--border-custom)" }}
           >
             <span
               className="font-mono uppercase tracking-[0.12em] block"
@@ -385,10 +334,8 @@ export function FinancialSaasThumbnail() {
           <div
             className="shrink-0 flex items-center gap-1.5 px-2 py-2 rounded-md self-center"
             style={{
-              backgroundColor: "rgba(239,230,216,0.03)",
-              borderWidth: "1px",
-              borderStyle: "solid",
-              borderColor: showConnected ? "rgba(127,175,155,0.15)" : "rgba(239,230,216,0.06)",
+              backgroundColor: "var(--surface)",
+              border: `1px solid ${showConnected ? "var(--accent-raw)" : "var(--border-custom)"}`,
               transition: "border-color 0.5s ease",
             }}
           >
@@ -397,11 +344,12 @@ export function FinancialSaasThumbnail() {
               style={{
                 width: "6px",
                 height: "6px",
-                backgroundColor: showConnected ? "var(--accent-raw)" : "rgba(239,230,216,0.15)",
+                backgroundColor: showConnected ? "var(--accent-raw)" : "var(--text-muted)",
                 boxShadow: showConnected ? "0 0 6px var(--accent-raw)" : "none",
                 animation:
                   showConnected && !isReducedMotion ? "fin-pulse 2s ease-in-out infinite" : "none",
                 transition: "background-color 0.4s ease, box-shadow 0.4s ease",
+                opacity: showConnected ? 1 : 0.15,
               }}
             />
             <span
@@ -421,7 +369,6 @@ export function FinancialSaasThumbnail() {
 
       {/* ═══ MIDDLE — Category tabs + transactions ═══ */}
       <div className="relative shrink-0 px-4 py-1.5 md:px-5" style={{ zIndex: 2 }}>
-        {/* Category tabs */}
         <div className="flex items-center gap-1.5 mb-2">
           {CATEGORIES.map((c, i) => {
             const isAct = activeCat === i;
@@ -433,10 +380,8 @@ export function FinancialSaasThumbnail() {
                   fontSize: "clamp(0.3125rem, 0.6vw, 0.4375rem)",
                   color: isAct ? "var(--accent-raw)" : "var(--text-muted)",
                   opacity: isAct ? 0.9 : 0.3,
-                  backgroundColor: isAct ? "rgba(127,175,155,0.08)" : "transparent",
-                  borderWidth: "1px",
-                  borderStyle: "solid",
-                  borderColor: isAct ? "rgba(127,175,155,0.15)" : "transparent",
+                  backgroundColor: isAct ? "var(--accent-glow)" : "transparent",
+                  border: `1px solid ${isAct ? "var(--accent-raw)" : "transparent"}`,
                   transition: "all 0.35s ease",
                 }}
               >
@@ -446,7 +391,6 @@ export function FinancialSaasThumbnail() {
           })}
         </div>
 
-        {/* Transaction rows for active category */}
         <div className="flex items-center gap-4">
           {cat.transactions.map((tx, i) => (
             <div
@@ -462,11 +406,7 @@ export function FinancialSaasThumbnail() {
             >
               <div
                 className="shrink-0 flex items-center justify-center rounded"
-                style={{
-                  width: "16px",
-                  height: "16px",
-                  backgroundColor: "rgba(239,230,216,0.03)",
-                }}
+                style={{ width: "16px", height: "16px", backgroundColor: "var(--surface)" }}
               >
                 <ArrowUpRight
                   size={8}
@@ -509,18 +449,12 @@ export function FinancialSaasThumbnail() {
         </div>
       </div>
 
-      {/* ═══ BOTTOM — Chart in bordered box ═══ */}
+      {/* ═══ BOTTOM — Chart ═══ */}
       <div className="relative px-4 pb-3 pt-1 md:px-5 md:pb-4" style={{ zIndex: 1, height: "60%" }}>
         <div
           className="w-full h-full rounded-lg overflow-hidden flex flex-col"
-          style={{
-            borderWidth: "1px",
-            borderStyle: "solid",
-            borderColor: "rgba(239,230,216,0.06)",
-            backgroundColor: "rgba(239,230,216,0.015)",
-          }}
+          style={{ border: "1px solid var(--border-custom)", backgroundColor: "var(--surface)" }}
         >
-          {/* Chart header */}
           <div className="flex items-center justify-between px-3 pt-2 pb-0.5">
             <span
               className="font-mono uppercase tracking-[0.1em]"
@@ -534,8 +468,6 @@ export function FinancialSaasThumbnail() {
               {cat.label} spending · 6M
             </span>
           </div>
-
-          {/* SVG */}
           <div className="relative flex-1 min-h-0 px-1 pb-1">
             <svg
               viewBox={`0 0 ${W} ${H}`}
@@ -543,7 +475,6 @@ export function FinancialSaasThumbnail() {
               preserveAspectRatio="none"
               style={{ display: "block" }}
             >
-              {/* Grid lines */}
               {[0.0, 0.25, 0.5, 0.75, 1.0].map((r, i) => (
                 <line
                   key={`g-${i}`}
@@ -556,8 +487,6 @@ export function FinancialSaasThumbnail() {
                   strokeWidth={0.5}
                 />
               ))}
-
-              {/* Y-axis labels */}
               {[
                 { value: 0.0, label: "$0" },
                 { value: 0.25, label: "$150" },
@@ -577,8 +506,6 @@ export function FinancialSaasThumbnail() {
                   {yl.label}
                 </text>
               ))}
-
-              {/* Line */}
               <path
                 d={linePath}
                 fill="none"

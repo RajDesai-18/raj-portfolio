@@ -123,67 +123,93 @@
    Design Tokens — Dark Mode (Default)
    ─────────────────────────────────────────── */
 :root {
-  --background: hsl(24 8% 12%);
-  --foreground: hsl(32 38% 90%);
-  --card: hsl(24 8% 14%);
-  --card-foreground: hsl(32 38% 90%);
-  --popover: hsl(24 8% 14%);
-  --popover-foreground: hsl(32 38% 90%);
-  --primary: hsl(155 23% 59%);
-  --primary-foreground: hsl(24 8% 12%);
-  --secondary: hsl(24 8% 18%);
-  --secondary-foreground: hsl(32 38% 90%);
-  --muted: hsl(24 8% 18%);
-  --muted-foreground: hsl(32 38% 50%);
-  --accent: hsl(155 23% 59%);
-  --accent-foreground: hsl(24 8% 12%);
+  --background: hsl(0 0% 5%);
+  --foreground: hsl(28 30% 90%);
+  --card: hsl(0 0% 7%);
+  --card-foreground: hsl(28 30% 90%);
+  --popover: hsl(0 0% 7%);
+  --popover-foreground: hsl(28 30% 90%);
+  --primary: hsl(174 62% 28%);
+  --primary-foreground: hsl(28 30% 92%);
+  --secondary: hsl(0 0% 12%);
+  --secondary-foreground: hsl(28 30% 90%);
+  --muted: hsl(0 0% 12%);
+  --muted-foreground: hsl(28 30% 50%);
+  --accent: hsl(174 62% 28%);
+  --accent-foreground: hsl(28 30% 92%);
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(0 0% 100%);
-  --border: hsl(32 38% 90% / 0.12);
-  --input: hsl(32 38% 90% / 0.12);
-  --ring: hsl(155 23% 59%);
+  --border: hsl(28 30% 90% / 0.11);
+  --input: hsl(28 30% 90% / 0.11);
+  --ring: hsl(174 62% 28%);
   --radius: 0.625rem;
 
-  --bg: #1f1f1f;
-  --text: #efe6d8;
-  --accent-raw: #7faf9b;
-  --surface: rgba(239, 230, 216, 0.07);
-  --border-custom: rgba(239, 230, 216, 0.12);
-  --text-muted: rgba(239, 230, 216, 0.5);
-  --accent-glow: rgba(127, 175, 155, 0.15);
+  --bg: #0d0d0d;
+  --text: #f2e7dc;
+  --accent-raw: #038c7f;
+  --surface: rgba(242, 231, 220, 0.06);
+  --border-custom: rgba(242, 231, 220, 0.11);
+  --text-muted: rgba(242, 231, 220, 0.42);
+  --accent-glow: rgba(3, 140, 127, 0.15);
+
+  /* Responsive typography sizes */
+  --text-display: clamp(2.5rem, 5.5vw, 5.5rem);
+  --text-heading: clamp(1.75rem, 3.5vw, 3rem);
+  --text-subheading: clamp(1.375rem, 2.2vw, 2rem);
+  --text-body-lg: clamp(1.125rem, 1.6vw, 1.5rem);
+  --text-body: clamp(1rem, 1.3vw, 1.25rem);
+  --text-body-sm: clamp(0.875rem, 1vw, 1.0625rem);
+  --text-label: clamp(0.6875rem, 0.8vw, 0.875rem);
+  --text-micro: clamp(0.625rem, 0.7vw, 0.8125rem);
 }
 
 /* ───────────────────────────────────────────
    Design Tokens — Light Mode
    ─────────────────────────────────────────── */
 .light {
-  --background: hsl(28 32% 84%);
-  --foreground: hsl(18 28% 17%);
-  --card: hsl(28 32% 82%);
-  --card-foreground: hsl(18 28% 17%);
-  --popover: hsl(28 32% 82%);
-  --popover-foreground: hsl(18 28% 17%);
-  --primary: hsl(13 76% 54%);
-  --primary-foreground: hsl(28 32% 95%);
-  --secondary: hsl(28 32% 78%);
-  --secondary-foreground: hsl(18 28% 17%);
-  --muted: hsl(28 32% 78%);
-  --muted-foreground: hsl(18 28% 50%);
-  --accent: hsl(13 76% 54%);
-  --accent-foreground: hsl(28 32% 95%);
+  --background: hsl(28 36% 90%);
+  --foreground: hsl(0 0% 5%);
+  --card: hsl(28 36% 88%);
+  --card-foreground: hsl(0 0% 5%);
+  --popover: hsl(28 36% 88%);
+  --popover-foreground: hsl(0 0% 5%);
+  --primary: hsl(176 96% 23%);
+  --primary-foreground: hsl(28 36% 94%);
+  --secondary: hsl(28 36% 84%);
+  --secondary-foreground: hsl(0 0% 5%);
+  --muted: hsl(28 36% 84%);
+  --muted-foreground: hsl(0 0% 5% / 0.58);
+  --accent: hsl(176 96% 23%);
+  --accent-foreground: hsl(28 36% 94%);
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(0 0% 100%);
-  --border: hsl(18 28% 17% / 0.1);
-  --input: hsl(18 28% 17% / 0.1);
-  --ring: hsl(13 76% 54%);
+  --border: hsl(0 0% 5% / 0.16);
+  --input: hsl(0 0% 5% / 0.16);
+  --ring: hsl(176 96% 23%);
 
-  --bg: #e8d8c3;
-  --text: #2b1e17;
-  --accent-raw: #e4572e;
-  --surface: rgba(43, 30, 23, 0.06);
-  --border-custom: rgba(43, 30, 23, 0.1);
-  --text-muted: rgba(43, 30, 23, 0.5);
-  --accent-glow: rgba(228, 87, 46, 0.12);
+  --bg: #f2e7dc;
+  --text: #0d0d0d;
+  --accent-raw: #027373;
+  --surface: rgba(13, 13, 13, 0.07);
+  --border-custom: rgba(13, 13, 13, 0.18);
+  --text-muted: rgba(13, 13, 13, 0.55);
+  --accent-glow: rgba(2, 115, 115, 0.12);
+}
+
+/* ───────────────────────────────────────────
+   Typography Scale-Up — Ultrawide (1800px+)
+   ─────────────────────────────────────────── */
+@media (min-width: 1800px) {
+  :root {
+    --text-display: clamp(3.5rem, 5vw, 6.5rem);
+    --text-heading: clamp(2.25rem, 3.2vw, 3.75rem);
+    --text-subheading: clamp(1.625rem, 2vw, 2.5rem);
+    --text-body-lg: clamp(1.25rem, 1.4vw, 1.75rem);
+    --text-body: clamp(1.125rem, 1.2vw, 1.5rem);
+    --text-body-sm: clamp(1rem, 0.9vw, 1.25rem);
+    --text-label: clamp(0.8125rem, 0.75vw, 1rem);
+    --text-micro: clamp(0.75rem, 0.65vw, 0.875rem);
+  }
 }
 
 /* ───────────────────────────────────────────
@@ -321,6 +347,29 @@
 }
 
 /* ───────────────────────────────────────────
+   Hero Marquee
+   ─────────────────────────────────────────── */
+.hero-marquee-track {
+  animation: hero-marquee-scroll 50s linear infinite;
+  will-change: transform;
+}
+
+@keyframes hero-marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-marquee-track {
+    animation: none;
+  }
+}
+
+/* ───────────────────────────────────────────
    Scroll Indicator
    ─────────────────────────────────────────── */
 .scroll-indicator {
@@ -421,7 +470,7 @@ button,
 a:hover,
 button:hover,
 [data-cursor-hover]:hover {
-  cursor: pointer;
+  cursor: none;
 }
 
 @media (pointer: coarse) {
@@ -443,59 +492,6 @@ button:hover,
 .about-char {
   display: inline-block;
   will-change: opacity;
-}
-
-/* ───────────────────────────────────────────
-   Skills Section — Pinned Horizontal Accordion
-   ─────────────────────────────────────────── */
-.skill-h-panel {
-  cursor: pointer;
-  background-color: transparent;
-}
-
-/* ── Tech boxes (borderless, full color) ── */
-.skill-box {
-  border: none;
-  background-color: transparent;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
-}
-
-.skill-box:hover {
-  background-color: var(--surface);
-  color: var(--accent-raw) !important;
-}
-
-/* ── Mobile: Vertical Accordion ── */
-.skill-mobile-expand {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.5s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-.skill-mobile-expand[data-expanded="true"] {
-  grid-template-rows: 1fr;
-}
-
-.skill-mobile-expand > div {
-  overflow: hidden;
-}
-
-.skill-mobile-reveal {
-  opacity: 0;
-  transform: translateY(8px);
-  transition:
-    opacity 0.3s ease 0s,
-    transform 0.3s ease 0s;
-}
-
-.skill-mobile-expand[data-expanded="true"] .skill-mobile-reveal {
-  opacity: 1;
-  transform: translateY(0);
-  transition:
-    opacity 0.4s ease 0.15s,
-    transform 0.4s ease 0.15s;
 }
 
 /* ───────────────────────────────────────────
@@ -833,7 +829,7 @@ button:hover,
 }
 
 /* Raise content above sweep */
-.contact-strip>* {
+.contact-strip > * {
   position: relative;
   z-index: 1;
 }
@@ -923,4 +919,212 @@ button:hover,
 
 .footer-top-btn:active {
   transform: scale(0.95);
+}
+
+/* ───────────────────────────────────────────
+   Mobile Navigation — Hamburger + Drawer
+   ─────────────────────────────────────────── */
+.mobile-hamburger {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-hamburger:active {
+  transform: scale(0.9) !important;
+}
+
+.mobile-drawer {
+  background-color: rgba(31, 31, 31, 0.92);
+  border-left: 1px solid var(--border-custom);
+}
+
+.light .mobile-drawer {
+  background-color: var(--bg);
+}
+
+/* Drawer link hover/active */
+.mobile-drawer a:active .font-display {
+  color: var(--accent-raw) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-drawer {
+    transition: none !important;
+  }
+}
+
+/* ───────────────────────────────────────────
+   Section Transition Marquees
+   ─────────────────────────────────────────── */
+.section-marquee-left {
+  animation: section-marquee-scroll-left var(--marquee-speed, 20s) linear infinite;
+  will-change: transform;
+}
+
+.section-marquee-right {
+  animation: section-marquee-scroll-right var(--marquee-speed, 20s) linear infinite;
+  will-change: transform;
+}
+
+@keyframes section-marquee-scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes section-marquee-scroll-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-marquee-left,
+  .section-marquee-right {
+    animation: none;
+  }
+}
+
+/* ───────────────────────────────────────────
+   Skills — Grid Blocks + Proximity Glow
+   ─────────────────────────────────────────── */
+
+.skills-word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.light .skill-block {
+  background-color: rgba(13, 13, 13, 0.05) !important;
+}
+
+/* ───────────────────────────────────────────
+   CSS Gradient Fallback Orbs
+   (for low-end devices without WebGL)
+   ─────────────────────────────────────────── */
+
+@keyframes css-orb-drift-1 {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(-60px, 40px);
+  }
+}
+
+@keyframes css-orb-drift-2 {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(40px, -50px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes css-orb-drift-1 {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes css-orb-drift-2 {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+}
+
+/* ───────────────────────────────────────────
+   Skip-to-Content Link
+   ─────────────────────────────────────────── */
+
+.skip-to-content {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99999;
+  padding: 12px 24px;
+  border-radius: 0 0 10px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--bg);
+  background-color: var(--accent-raw);
+  transition: top 0.3s ease;
+}
+
+.skip-to-content:focus {
+  top: 0;
+  outline: none;
+}
+
+/* ───────────────────────────────────────────
+   Projects — Split Scroll (Concept B)
+   ─────────────────────────────────────────── */
+
+/* SplitText word reveal */
+.split-work-word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* Project block entrance */
+.split-project-block {
+  will-change: opacity, transform;
+}
+
+/* Mobile card entrance */
+.split-project-mobile {
+  will-change: opacity, transform;
+}
+
+/* ───────────────────────────────────────────
+   Projects — Typographic List (Concept E)
+   ─────────────────────────────────────────── */
+
+.typo-list-row {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Accent sweep on hover (like contact strips) */
+.typo-list-row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--accent-raw);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: 0;
+  opacity: 0.06;
+}
+
+.typo-list-row:hover::before {
+  transform: scaleX(1);
+}
+
+/* Raise content above sweep */
+.typo-list-row > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Name goes accent on hover */
+.typo-list-row:hover .typo-row-name {
+  color: var(--accent-raw) !important;
 }
