@@ -3,16 +3,12 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { CustomCursor } from "@/components/ui/custom-cursor";
+import { MeshGradient } from "@/components/background/mesh-gradient";
 import { FloatingThemeToggle } from "@/components/ui/floating-theme-toggle";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import dynamic from "next/dynamic";
 
-const MeshGradient = dynamic(
-  () => import("@/components/background/mesh-gradient").then((mod) => mod.MeshGradient),
-  { ssr: false }
-);
 
 export const metadata: Metadata = {
   title: "Raj Desai — Fullstack Software Engineer",

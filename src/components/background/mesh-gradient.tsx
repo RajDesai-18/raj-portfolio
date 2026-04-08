@@ -1,18 +1,16 @@
 "use client";
 
-import { MeshGradient as MeshGradientShader } from "@paper-design/shaders-react";
+import dynamic from "next/dynamic";
 import { useTheme } from "@/components/providers/theme-provider";
 import { usePerformanceTier } from "@/hooks/use-performance-tier";
 
-/* ──────────────────────────────────────────────────────────
-   Monochrome mesh gradient
-   Dark:  #0D0D0D (5%) → #352F28 (20%) — 15% lightness spread
-   Light: #F2E7DC (91%) → #A89880 (63%) — 28% lightness spread
-   Both warm-neutral, no accent color in the gradient.
-   ────────────────────────────────────────────────────────── */
-
 const DARK_COLORS = ["#0D0D0D", "#2C2620", "#181614", "#352F28"];
 const LIGHT_COLORS = ["#F2E7DC", "#BFAD96", "#DDD0C0", "#A89880"];
+
+const MeshGradientShader = dynamic(
+  () => import("@paper-design/shaders-react").then((mod) => mod.MeshGradient),
+  { ssr: false }
+);
 
 function CSSGradientFallback({ theme }: { theme: string }) {
   const isDark = theme === "dark";
