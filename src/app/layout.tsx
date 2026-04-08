@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "Raj Desai — Fullstack Software Engineer",
   description:
     "Product-minded fullstack engineer building things that are both useful and enjoyable to use. MS CS at UT Dallas, open to full-time roles July 2026.",
-  metadataBase: new URL("https://rajdesai.dev"),
+  metadataBase: new URL("https://rajdesai.io"),
   keywords: [
     "Raj Desai",
     "software engineer",
