@@ -52,11 +52,19 @@ const TRAVEL_PHOTOS = [
 const SPOTIFY_PLAYLISTS = [
   {
     id: "3HPsMBw0lXA2wbvYrq7fRA",
-    name: "Indie Mix",
+    name: "indie acoustics.",
   },
   {
     id: "7irjVFMTVAoMuBYlLh8WCg",
-    name: "Playlist 2",
+    name: "Soft reset",
+  },
+  {
+    id: "6hWAfY0iBxDXmZO5dM9BL9",
+    name: "Lo-fi Chill 懐",
+  },
+  {
+    id: "5xR09OH1eJSx8CyTjGi8sk",
+    name: "After Hours Only",
   },
 ];
 
