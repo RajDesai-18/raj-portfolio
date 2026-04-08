@@ -7,6 +7,7 @@ import { MeshGradient } from "@/components/background/mesh-gradient";
 import { FloatingThemeToggle } from "@/components/ui/floating-theme-toggle";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: "Raj Desai — Fullstack Software Engineer",
@@ -140,6 +141,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Toaster />
           </SmoothScrollProvider>
         </ThemeProvider>
+        <SpeedInsights />
         <Analytics />
       </body>
     </html>
