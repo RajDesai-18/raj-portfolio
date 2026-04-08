@@ -22,7 +22,7 @@ export function FloatingThemeToggle() {
 
   useEffect(() => {
     function onScroll() {
-      setIsPastHero(window.scrollY > window.innerHeight * 0.15);
+      setIsPastHero(window.scrollY > window.innerHeight * 0.6);
     }
 
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -30,17 +30,16 @@ export function FloatingThemeToggle() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // In hero: sits right after LinkedIn icon
-  // GitHub is at left: 64px, LinkedIn at 64+36+20=120px, toggle at 64+36+20+36+20=176px
-  // Past hero: slides to where GitHub was (64px)
+  // Desktop only — appears after scrolling past hero
+  // (hero has its own embedded theme toggle)
   return (
     <div
-      className="fixed z-50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+      className="fixed z-50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hidden lg:block"
       style={{
-        bottom: "28px",
-        left: isPastHero ? "64px" : "176px",
-        opacity: isVisible ? 1 : 0,
-        pointerEvents: isVisible ? "auto" : "none",
+        bottom: "34px",
+        left: "24px",
+        opacity: isVisible && isPastHero ? 1 : 0,
+        pointerEvents: isVisible && isPastHero ? "auto" : "none",
       }}
     >
       <Magnetic strength={0.4} radius={60}>

@@ -1,17 +1,8 @@
 "use client";
 
-import { TimelineSection } from "@/components/sections/timeline-section";
+import { CareerSection } from "@/components/sections/career-section";
 import { EXPERIENCE_ENTRIES } from "@/lib/experience-data";
 
 export function ExperienceSection() {
-  return (
-    <TimelineSection
-      id="experience"
-      number="04"
-      label="Experience"
-      ghostText="EXP"
-      ghostAlign="left"
-      entries={EXPERIENCE_ENTRIES}
-    />
-  );
+  return <CareerSection id="experience" entries={EXPERIENCE_ENTRIES} />;
 }

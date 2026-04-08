@@ -3,7 +3,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { Search, Flame, Croissant, Salad, IceCreamCone } from "lucide-react";
 
-// ── Multiple queries that cycle ──
 interface QueryCycle {
   text: string;
   queryPos: { x: number; y: number };
@@ -48,7 +47,6 @@ const QUERIES: QueryCycle[] = [
   },
 ];
 
-// ── Cluster icons ──
 const CLUSTERS = [
   { id: "spicy", icon: Flame, x: 22, y: 30, label: "Spicy" },
   { id: "baking", icon: Croissant, x: 72, y: 18, label: "Baking" },
@@ -56,7 +54,6 @@ const CLUSTERS = [
   { id: "dessert", icon: IceCreamCone, x: 54, y: 78, label: "Dessert" },
 ];
 
-// ── Embedding dots ──
 interface EmbeddingDot {
   id: number;
   x: number;
@@ -74,7 +71,6 @@ function distFrom(qx: number, qy: number, dx: number, dy: number): number {
 }
 
 const DOTS: EmbeddingDot[] = [
-  // ── Spicy cluster ──
   { id: 0, x: 16, y: 20, size: 4, cluster: "spicy", label: "Thai Tom Yum Ramen", similarity: 0.96 },
   { id: 1, x: 30, y: 34, size: 4, cluster: "spicy", label: "Dan Dan Noodles", similarity: 0.91 },
   { id: 2, x: 14, y: 48, size: 4, cluster: "spicy", label: "Kimchi Jjigae", similarity: 0.87 },
@@ -84,16 +80,12 @@ const DOTS: EmbeddingDot[] = [
   { id: 6, x: 20, y: 54, size: 2.5, cluster: "spicy" },
   { id: 7, x: 28, y: 24, size: 2.5, cluster: "spicy" },
   { id: 8, x: 8, y: 42, size: 2.5, cluster: "spicy" },
-
-  // ── Baking cluster ──
   { id: 9, x: 66, y: 10, size: 4, cluster: "baking", label: "Butter Croissants", similarity: 0.93 },
   { id: 10, x: 76, y: 16, size: 4, cluster: "baking", label: "Puff Pastry Tart", similarity: 0.89 },
   { id: 11, x: 62, y: 22, size: 4, cluster: "baking", label: "Cream Puffs", similarity: 0.86 },
   { id: 12, x: 82, y: 8, size: 3, cluster: "baking" },
   { id: 13, x: 70, y: 28, size: 2.5, cluster: "baking" },
   { id: 14, x: 86, y: 20, size: 2.5, cluster: "baking" },
-
-  // ── Fresh cluster ──
   {
     id: 15,
     x: 72,
@@ -115,8 +107,6 @@ const DOTS: EmbeddingDot[] = [
   { id: 17, x: 68, y: 60, size: 4, cluster: "fresh", label: "Watermelon Feta", similarity: 0.84 },
   { id: 18, x: 86, y: 48, size: 2.5, cluster: "fresh" },
   { id: 19, x: 76, y: 64, size: 3, cluster: "fresh" },
-
-  // ── Dessert cluster ──
   {
     id: 20,
     x: 48,
@@ -130,8 +120,6 @@ const DOTS: EmbeddingDot[] = [
   { id: 22, x: 44, y: 84, size: 4, cluster: "dessert", label: "Tiramisu", similarity: 0.86 },
   { id: 23, x: 64, y: 86, size: 2.5, cluster: "dessert" },
   { id: 24, x: 52, y: 90, size: 3, cluster: "dessert" },
-
-  // ── Scattered ──
   { id: 25, x: 45, y: 14, size: 2.5, cluster: "" },
   { id: 26, x: 50, y: 40, size: 2.5, cluster: "" },
   { id: 27, x: 92, y: 36, size: 2.5, cluster: "" },
@@ -140,7 +128,6 @@ const DOTS: EmbeddingDot[] = [
   { id: 30, x: 36, y: 92, size: 2.5, cluster: "" },
 ];
 
-// ── Timing (slow, cinematic) ──
 const TYPING_SPEED = 55;
 const EMBED_DELAY = 600;
 const SWEEP_DURATION = 2400;
@@ -193,8 +180,6 @@ export function LlmCookbookThumbnail() {
     const runCycle = () => {
       const idx = cycleIndexRef.current;
       const q = QUERIES[idx];
-
-      // Reset
       setQueryIndex(idx);
       setTypedText("");
       setShowQueryDot(false);
@@ -206,33 +191,24 @@ export function LlmCookbookThumbnail() {
       setShowResults(false);
       setShowRings(false);
 
-      // Phase 1: Type
       let charIndex = 0;
       typingRef.current = setInterval(() => {
         charIndex++;
         setTypedText(q.text.slice(0, charIndex));
-
         if (charIndex >= q.text.length) {
           if (typingRef.current) clearInterval(typingRef.current);
-
-          // Phase 2: Embed
           timeoutRef.current = setTimeout(() => {
             setShowQueryDot(true);
             setShowRings(true);
-
-            // Phase 3: Sweep
             timeoutRef.current = setTimeout(() => {
               setIsSweeping(true);
               const startTime = Date.now();
-
               sweepRef.current = setInterval(() => {
                 const elapsed = Date.now() - startTime;
                 const progress = Math.min(elapsed / SWEEP_DURATION, 1);
                 const easedProgress = 1 - Math.pow(1 - progress, 2.5);
                 const currentRadius = easedProgress * SWEEP_MAX_RADIUS;
-
                 setSweepRadius(currentRadius);
-
                 setSweptDots((prev) => {
                   const next = new Set(prev);
                   DOTS.forEach((dot) => {
@@ -243,26 +219,19 @@ export function LlmCookbookThumbnail() {
                   });
                   return next;
                 });
-
                 if (progress >= 1) {
                   if (sweepRef.current) clearInterval(sweepRef.current);
                   setIsSweeping(false);
                   setSweepComplete(true);
-
-                  // Phase 4: Lines
                   timeoutRef.current = setTimeout(() => {
                     q.matchIds.forEach((id, i) => {
                       setTimeout(() => {
                         setActiveLines((prev) => [...prev, id]);
                       }, i * LINE_STAGGER);
                     });
-
-                    // Phase 5: Results
                     timeoutRef.current = setTimeout(
                       () => {
                         setShowResults(true);
-
-                        // Next cycle
                         timeoutRef.current = setTimeout(() => {
                           cycleIndexRef.current = (idx + 1) % QUERIES.length;
                           runCycle();
@@ -280,7 +249,6 @@ export function LlmCookbookThumbnail() {
     };
 
     timeoutRef.current = setTimeout(runCycle, CYCLE_PAUSE);
-
     return cleanup;
   }, [cleanup]);
 
@@ -292,20 +260,21 @@ export function LlmCookbookThumbnail() {
       className="relative w-full overflow-hidden rounded-xl select-none"
       style={{
         aspectRatio: "16 / 10",
-        backgroundColor: "#161616",
+        backgroundColor: "var(--bg)",
         border: "1px solid var(--border-custom)",
       }}
     >
-      {/* ── Dot grid ── */}
+      {/* Dot grid */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: "radial-gradient(circle, rgba(239,230,216,0.025) 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(circle, var(--border-custom) 1px, transparent 1px)",
           backgroundSize: "24px 24px",
+          opacity: 0.35,
         }}
       />
 
-      {/* ── Ambient glow follows query position ── */}
+      {/* Ambient glow */}
       <div
         className="absolute pointer-events-none"
         style={{
@@ -321,17 +290,16 @@ export function LlmCookbookThumbnail() {
         }}
       />
 
-      {/* ═══ SEARCH BAR — Overlay top-left ═══ */}
+      {/* ═══ SEARCH BAR ═══ */}
       <div className="absolute top-3 left-3 md:top-4 md:left-4" style={{ zIndex: 10 }}>
         <div
           className="flex items-center gap-2 px-2.5 py-1.5 rounded-md"
           style={{
-            backgroundColor: "rgba(22,22,22,0.85)",
+            backgroundColor: "var(--bg)",
             backdropFilter: "blur(8px)",
             borderWidth: "1px",
             borderStyle: "solid",
-            borderColor:
-              isSweeping || sweepComplete ? "var(--accent-raw)" : "rgba(239,230,216,0.08)",
+            borderColor: isSweeping || sweepComplete ? "var(--accent-raw)" : "var(--border-custom)",
             transition: "border-color 0.5s ease, box-shadow 0.5s ease",
             boxShadow: isSweeping ? "0 0 12px var(--accent-glow)" : "none",
             maxWidth: "clamp(200px, 45vw, 300px)",
@@ -381,11 +349,9 @@ export function LlmCookbookThumbnail() {
         </div>
       </div>
 
-      {/* ═══ VECTOR SPACE — Full frame ═══ */}
+      {/* ═══ VECTOR SPACE ═══ */}
       <div className="absolute inset-0" style={{ zIndex: 1 }}>
-        {/* SVG layer */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 2 }}>
-          {/* Distance rings */}
           {showRings &&
             [15, 30, 45].map((r, i) => (
               <circle
@@ -404,8 +370,6 @@ export function LlmCookbookThumbnail() {
                 }}
               />
             ))}
-
-          {/* Sweep ring */}
           {isSweeping && (
             <circle
               cx={`${currentQuery.queryPos.x}%`}
@@ -417,8 +381,6 @@ export function LlmCookbookThumbnail() {
               strokeOpacity={Math.max(0, 0.4 - (sweepRadius / SWEEP_MAX_RADIUS) * 0.35)}
             />
           )}
-
-          {/* Sweep fill */}
           {(isSweeping || sweepComplete) && (
             <circle
               cx={`${currentQuery.queryPos.x}%`}
@@ -430,13 +392,10 @@ export function LlmCookbookThumbnail() {
               style={{ transition: "fill-opacity 1s ease" }}
             />
           )}
-
-          {/* Connection lines */}
           {currentQuery.matchIds.map((id) => {
             const dot = DOTS.find((d) => d.id === id);
             if (!dot || !dot.similarity) return null;
             const isActive = activeLines.includes(id);
-
             return (
               <line
                 key={`line-${id}`}
@@ -457,12 +416,11 @@ export function LlmCookbookThumbnail() {
           })}
         </svg>
 
-        {/* ── Cluster icons — pulse during sweep ── */}
+        {/* Cluster icons */}
         {CLUSTERS.map((cluster) => {
           const Icon = cluster.icon;
           const isMatchedCluster = cluster.id === currentQuery.matchCluster;
           const isActive = isMatchedCluster && matchClusterActive;
-
           return (
             <div
               key={cluster.id}
@@ -481,10 +439,10 @@ export function LlmCookbookThumbnail() {
                 style={{
                   width: "clamp(28px, 3.5vw, 36px)",
                   height: "clamp(28px, 3.5vw, 36px)",
-                  backgroundColor: isActive ? "rgba(127,175,155,0.12)" : "rgba(239,230,216,0.03)",
+                  backgroundColor: isActive ? "var(--accent-glow)" : "var(--surface)",
                   borderWidth: "1px",
                   borderStyle: "solid",
-                  borderColor: isActive ? "var(--accent-raw)" : "rgba(239,230,216,0.06)",
+                  borderColor: isActive ? "var(--accent-raw)" : "var(--border-custom)",
                   boxShadow: isActive ? "0 0 18px var(--accent-glow)" : "none",
                   animation:
                     isSweeping && !isReducedMotion
@@ -519,18 +477,16 @@ export function LlmCookbookThumbnail() {
           );
         })}
 
-        {/* ── Embedding dots ── */}
+        {/* Embedding dots */}
         {DOTS.map((dot) => {
           const wasSwept = sweptDots.has(dot.id);
           const isMatch = currentQuery.matchIds.includes(dot.id);
           const isActivated = activeLines.includes(dot.id);
-
           let dotOpacity = 0.12;
           let dotColor = "var(--text)";
           let dotGlow = "none";
           let dotAnimation = "none";
           let dotScale = 1;
-
           if (wasSwept) {
             if (isMatch) {
               dotOpacity = 1;
@@ -547,7 +503,6 @@ export function LlmCookbookThumbnail() {
               dotColor = "var(--text)";
             }
           }
-
           return (
             <div key={dot.id}>
               <div
@@ -568,8 +523,6 @@ export function LlmCookbookThumbnail() {
                   zIndex: isMatch && wasSwept ? 4 : 1,
                 }}
               />
-
-              {/* Labels for matched dots */}
               {isMatch && dot.label && dot.similarity && (
                 <div
                   className="absolute pointer-events-none"
@@ -586,8 +539,9 @@ export function LlmCookbookThumbnail() {
                   <div
                     className="flex flex-col gap-0 px-2 py-1 rounded"
                     style={{
-                      backgroundColor: "rgba(22,22,22,0.88)",
+                      backgroundColor: "var(--bg)",
                       backdropFilter: "blur(4px)",
+                      border: "1px solid var(--border-custom)",
                     }}
                   >
                     <span
@@ -619,7 +573,7 @@ export function LlmCookbookThumbnail() {
           );
         })}
 
-        {/* ── Query dot ── */}
+        {/* Query dot */}
         <div
           className="absolute rounded-full"
           style={{
@@ -659,9 +613,10 @@ export function LlmCookbookThumbnail() {
               fontSize: "clamp(0.3125rem, 0.6vw, 0.4375rem)",
               color: "var(--accent-raw)",
               opacity: 0.6,
-              backgroundColor: "rgba(22,22,22,0.85)",
+              backgroundColor: "var(--bg)",
               padding: "2px 5px",
               borderRadius: "2px",
+              border: "1px solid var(--border-custom)",
             }}
           >
             query
@@ -669,16 +624,16 @@ export function LlmCookbookThumbnail() {
         </div>
       </div>
 
-      {/* ═══ RESULTS — Overlay top-right ═══ */}
+      {/* ═══ RESULTS ═══ */}
       <div className="absolute top-3 right-3 md:top-4 md:right-4" style={{ zIndex: 10 }}>
         <div
           className="flex items-center gap-2 px-2.5 py-1.5 rounded-md"
           style={{
-            backgroundColor: "rgba(22,22,22,0.85)",
+            backgroundColor: "var(--bg)",
             backdropFilter: "blur(8px)",
             borderWidth: "1px",
             borderStyle: "solid",
-            borderColor: "rgba(239,230,216,0.06)",
+            borderColor: "var(--border-custom)",
             opacity: showResults ? 1 : 0,
             transform: showResults ? "translateY(0)" : "translateY(-6px)",
             transition: "opacity 0.5s ease, transform 0.5s ease",
@@ -690,7 +645,7 @@ export function LlmCookbookThumbnail() {
               width: "12px",
               height: "12px",
               borderRadius: "50%",
-              backgroundColor: "rgba(127,175,155,0.15)",
+              backgroundColor: "var(--accent-glow)",
               borderWidth: "1px",
               borderStyle: "solid",
               borderColor: "var(--accent-raw)",
@@ -698,7 +653,6 @@ export function LlmCookbookThumbnail() {
           >
             <Search size={6} style={{ color: "var(--accent-raw)" }} strokeWidth={2.5} />
           </div>
-
           <span
             className="font-mono tracking-wide"
             style={{
@@ -709,7 +663,6 @@ export function LlmCookbookThumbnail() {
           >
             {currentQuery.resultText}
           </span>
-
           <span
             className="font-mono"
             style={{

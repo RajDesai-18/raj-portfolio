@@ -21,10 +21,8 @@ const DIFF_LINES = [
   { num: "51", type: "ctx", text: "}" },
 ];
 
-// ── Review comment ──
 const REVIEW_TEXT = "Validate payload schema before accessing nested fields";
 
-// ── Pipeline stages ──
 const PIPELINE = [
   { id: "pr", label: "PR", icon: GitPullRequest },
   { id: "queue", label: "QUEUE", icon: ListTodo },
@@ -32,23 +30,17 @@ const PIPELINE = [
   { id: "review", label: "REVIEW", icon: MessageSquareCheck },
 ];
 
-// ── Timing (ms) ──
-const TRAVEL_DURATION = 900; // time to move between nodes
-const PROCESS_DURATION = 1400; // pause at each node (processing)
+const TRAVEL_DURATION = 900;
+const PROCESS_DURATION = 1400;
 const TYPING_DURATION = 2200;
 const HOLD_DURATION = 2500;
 const TOTAL_NODES = PIPELINE.length;
 
 export function PrSenseiThumbnail() {
-  // Which node the particle is currently at (-1 = not started)
   const [particleAt, setParticleAt] = useState(-1);
-  // Is the particle traveling (animating between nodes) or dwelling (processing)
   const [isTraveling, setIsTraveling] = useState(false);
-  // Which node is actively "processing" (pulsing)
   const [processingNode, setProcessingNode] = useState(-1);
-  // Highest node reached (for completed state styling)
   const [reachedNode, setReachedNode] = useState(-1);
-
   const [typedText, setTypedText] = useState("");
   const [showComment, setShowComment] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
@@ -76,7 +68,6 @@ export function PrSenseiThumbnail() {
     }
 
     const runCycle = () => {
-      // Reset everything
       setShowComment(false);
       setShowStatus(false);
       setTypedText("");
@@ -87,30 +78,23 @@ export function PrSenseiThumbnail() {
 
       let currentNode = 0;
 
-      // Step: travel to a node, then process there
       const travelToNode = (nodeIndex: number) => {
-        // Start traveling
         setIsTraveling(true);
         setProcessingNode(-1);
         setParticleAt(nodeIndex);
 
-        // Arrive after travel duration
         timeoutRef.current = setTimeout(() => {
-          // Arrived — start processing
           setIsTraveling(false);
           setProcessingNode(nodeIndex);
           setReachedNode(nodeIndex);
 
-          // Process for a while, then move on
           timeoutRef.current = setTimeout(() => {
             setProcessingNode(-1);
             currentNode = nodeIndex + 1;
 
             if (currentNode < TOTAL_NODES) {
-              // Travel to next node
               travelToNode(currentNode);
             } else {
-              // Pipeline complete — start typing
               setShowComment(true);
               let charIndex = 0;
 
@@ -120,12 +104,8 @@ export function PrSenseiThumbnail() {
 
                 if (charIndex >= REVIEW_TEXT.length) {
                   if (typingRef.current) clearInterval(typingRef.current);
-
-                  // Show status
                   timeoutRef.current = setTimeout(() => {
                     setShowStatus(true);
-
-                    // Hold then restart
                     timeoutRef.current = setTimeout(() => {
                       runCycle();
                     }, HOLD_DURATION);
@@ -137,18 +117,15 @@ export function PrSenseiThumbnail() {
         }, TRAVEL_DURATION);
       };
 
-      // Kick off with small initial delay
       timeoutRef.current = setTimeout(() => {
         travelToNode(0);
       }, 600);
     };
 
     timeoutRef.current = setTimeout(runCycle, 800);
-
     return cleanup;
   }, [cleanup]);
 
-  // Particle position as percentage (0% = first node, 100% = last node)
   const particlePercent = particleAt >= 0 ? (particleAt / (TOTAL_NODES - 1)) * 100 : 0;
 
   return (
@@ -156,20 +133,21 @@ export function PrSenseiThumbnail() {
       className="relative w-full h-full overflow-hidden rounded-xl select-none flex flex-col"
       style={{
         aspectRatio: "16 / 10",
-        backgroundColor: "#161616",
+        backgroundColor: "var(--bg)",
         border: "1px solid var(--border-custom)",
       }}
     >
-      {/* ── Dot grid background ── */}
+      {/* Dot grid */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: "radial-gradient(circle, rgba(239,230,216,0.03) 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(circle, var(--border-custom) 1px, transparent 1px)",
           backgroundSize: "18px 18px",
+          opacity: 0.4,
         }}
       />
 
-      {/* ── Subtle glow ── */}
+      {/* Glow */}
       <div
         className="absolute pointer-events-none"
         style={{
@@ -184,24 +162,21 @@ export function PrSenseiThumbnail() {
         }}
       />
 
-      {/* ═══ PIPELINE — Top strip ═══ */}
+      {/* ═══ PIPELINE ═══ */}
       <div
         className="relative shrink-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-3"
         style={{ zIndex: 1 }}
       >
         <div className="relative flex items-center justify-between">
-          {/* Connection line — spans from first node center to last node center */}
           <div
             className="absolute h-px"
             style={{
-              backgroundColor: "rgba(239,230,216,0.07)",
+              backgroundColor: "var(--border-custom)",
               top: "calc(50% - 8px)",
               left: "14px",
               right: "14px",
             }}
           />
-
-          {/* Progress fill on the line (shows completed path) */}
           <div
             className="absolute h-px origin-left"
             style={{
@@ -216,13 +191,10 @@ export function PrSenseiThumbnail() {
                 : `transform ${TRAVEL_DURATION}ms cubic-bezier(0.33, 1, 0.68, 1)`,
             }}
           />
-
-          {/* Particle / beam dot */}
           <div
             className="absolute pointer-events-none"
             style={{
               top: "calc(50% - 8px)",
-              // Position from first-node-center to last-node-center
               left: `calc(14px + ${particlePercent / 100} * (100% - 28px) - 3px)`,
               width: "6px",
               height: "6px",
@@ -237,29 +209,26 @@ export function PrSenseiThumbnail() {
             }}
           />
 
-          {/* Nodes */}
           {PIPELINE.map((node, i) => {
             const isReached = reachedNode >= i;
             const isProcessing = processingNode === i;
             const Icon = node.icon;
-
             return (
               <div
                 key={node.id}
                 className="relative flex flex-col items-center gap-1"
                 style={{ zIndex: 2 }}
               >
-                {/* Node circle */}
                 <div
                   className="flex items-center justify-center transition-all duration-400"
                   style={{
                     width: "clamp(22px, 3.2vw, 28px)",
                     height: "clamp(22px, 3.2vw, 28px)",
                     borderRadius: "50%",
-                    border: `1.5px solid ${isReached ? "var(--accent-raw)" : "rgba(239,230,216,0.1)"}`,
-                    backgroundColor: isProcessing ? "rgba(127,175,155,0.12)" : "#161616",
+                    border: `1.5px solid ${isReached ? "var(--accent-raw)" : "var(--border-custom)"}`,
+                    backgroundColor: isProcessing ? "var(--accent-glow)" : "var(--bg)",
                     boxShadow: isProcessing
-                      ? "0 0 14px var(--accent-glow), 0 0 28px rgba(127,175,155,0.08)"
+                      ? "0 0 14px var(--accent-glow), 0 0 28px var(--accent-glow)"
                       : "none",
                     animation: isProcessing ? "pr-node-pulse 0.8s ease-in-out infinite" : "none",
                     transition:
@@ -270,22 +239,18 @@ export function PrSenseiThumbnail() {
                     size={10}
                     className="transition-colors duration-400"
                     style={{
-                      color: isReached ? "var(--accent-raw)" : "rgba(239,230,216,0.15)",
+                      color: isReached ? "var(--accent-raw)" : "var(--text-muted)",
+                      opacity: isReached ? 1 : 0.3,
                     }}
                     strokeWidth={2}
                   />
                 </div>
-
-                {/* Label */}
                 <span
                   className="font-mono uppercase tracking-[0.15em] transition-colors duration-400"
                   style={{
                     fontSize: "clamp(0.375rem, 0.75vw, 0.5rem)",
-                    color: isProcessing
-                      ? "var(--accent-raw)"
-                      : isReached
-                        ? "var(--text-muted)"
-                        : "rgba(239,230,216,0.15)",
+                    color: isProcessing ? "var(--accent-raw)" : "var(--text-muted)",
+                    opacity: isProcessing ? 1 : isReached ? 0.7 : 0.3,
                   }}
                 >
                   {node.label}
@@ -296,22 +261,21 @@ export function PrSenseiThumbnail() {
         </div>
       </div>
 
-      {/* ── Separator ── */}
+      {/* Separator */}
       <div
         className="mx-4 md:mx-6 h-px shrink-0"
-        style={{ backgroundColor: "rgba(239,230,216,0.05)" }}
+        style={{ backgroundColor: "var(--border-custom)", opacity: 0.5 }}
       />
 
-      {/* ═══ CODE DIFF — Middle area ═══ */}
+      {/* ═══ CODE DIFF ═══ */}
       <div
         className="relative flex-1 min-h-0 px-4 pt-3 pb-2 md:px-6 md:pt-4 overflow-hidden"
         style={{ zIndex: 1 }}
       >
-        {/* File tab */}
         <div className="flex items-center gap-2 mb-2">
           <div
             className="flex items-center gap-1.5 px-2 py-0.5 rounded"
-            style={{ backgroundColor: "rgba(239,230,216,0.05)" }}
+            style={{ backgroundColor: "var(--surface)" }}
           >
             <svg
               width="8"
@@ -351,15 +315,12 @@ export function PrSenseiThumbnail() {
           </div>
         </div>
 
-        {/* Diff lines */}
         <div className="space-y-0">
           {DIFF_LINES.map((line, i) => (
             <div
               key={i}
               className="flex items-start gap-0 font-mono leading-[1.65]"
-              style={{
-                fontSize: "clamp(0.4375rem, 0.95vw, 0.625rem)",
-              }}
+              style={{ fontSize: "clamp(0.4375rem, 0.95vw, 0.625rem)" }}
             >
               <span
                 className="w-5 md:w-7 shrink-0 text-right pr-2 select-none"
@@ -388,9 +349,9 @@ export function PrSenseiThumbnail() {
                     line.type === "del"
                       ? "rgba(228,90,90,0.45)"
                       : line.type === "add"
-                        ? "rgba(127,175,155,0.75)"
+                        ? "var(--accent-raw)"
                         : "var(--text-muted)",
-                  opacity: line.type === "del" ? 0.6 : line.type === "ctx" ? 0.3 : 1,
+                  opacity: line.type === "del" ? 0.6 : line.type === "ctx" ? 0.3 : 0.75,
                   textDecoration: line.type === "del" ? "line-through" : "none",
                   textDecorationColor: "rgba(228,90,90,0.25)",
                 }}
@@ -401,7 +362,6 @@ export function PrSenseiThumbnail() {
           ))}
         </div>
 
-        {/* ── Inline review comment ── */}
         <div
           className="mt-1.5 ml-5 md:ml-7 pl-3 py-1.5 transition-all duration-500"
           style={{
@@ -432,10 +392,12 @@ export function PrSenseiThumbnail() {
         </div>
       </div>
 
-      {/* ═══ STATUS BAR — Bottom strip ═══ */}
+      {/* ═══ STATUS BAR ═══ */}
       <div className="relative shrink-0 px-4 pb-3 pt-2 md:px-6 md:pb-4" style={{ zIndex: 1 }}>
-        <div className="mb-2.5 h-px" style={{ backgroundColor: "rgba(239,230,216,0.05)" }} />
-
+        <div
+          className="mb-2.5 h-px"
+          style={{ backgroundColor: "var(--border-custom)", opacity: 0.5 }}
+        />
         <div
           className="flex items-center gap-2"
           style={{
@@ -450,7 +412,7 @@ export function PrSenseiThumbnail() {
               width: "14px",
               height: "14px",
               borderRadius: "50%",
-              backgroundColor: "rgba(127,175,155,0.15)",
+              backgroundColor: "var(--accent-glow)",
               border: "1px solid var(--accent-raw)",
             }}
           >
@@ -470,7 +432,6 @@ export function PrSenseiThumbnail() {
               />
             </svg>
           </div>
-
           <span
             className="font-mono tracking-wide"
             style={{
@@ -481,7 +442,6 @@ export function PrSenseiThumbnail() {
           >
             Review complete
           </span>
-
           <span
             className="font-mono"
             style={{
@@ -492,7 +452,6 @@ export function PrSenseiThumbnail() {
           >
             ·
           </span>
-
           <span
             className="font-mono tracking-wide"
             style={{
@@ -503,7 +462,6 @@ export function PrSenseiThumbnail() {
           >
             2 suggestions
           </span>
-
           <span
             className="font-mono"
             style={{
@@ -514,7 +472,6 @@ export function PrSenseiThumbnail() {
           >
             ·
           </span>
-
           <span
             className="font-mono tracking-wide"
             style={{
