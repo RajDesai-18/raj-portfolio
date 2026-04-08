@@ -297,7 +297,7 @@ function SpotifySlot({ playlists }: { playlists: { id: string; name: string }[] 
           <>
             <button
               onClick={(e) => handleNav(-1, e)}
-              className="opacity-0 group-hover/card:opacity-100 transition-opacity duration-200"
+              className="opacity-100 lg:opacity-0 lg:group-hover/card:opacity-100 transition-opacity duration-200"
               style={{
                 ...arrowStyle,
                 left: 0,
@@ -320,7 +320,7 @@ function SpotifySlot({ playlists }: { playlists: { id: string; name: string }[] 
               &#8250;
             </button>
             <div
-              className="absolute top-2.5 right-2.5 font-mono tracking-wide pointer-events-none select-none z-10"
+              className="absolute top-2.5 right-2.5 font-mono tracking-wide pointer-events-none select-none z-10 opacity-100 lg:opacity-0 lg:group-hover/card:opacity-100 transition-opacity duration-200"
               style={{
                 fontSize: 10,
                 padding: "2px 7px",

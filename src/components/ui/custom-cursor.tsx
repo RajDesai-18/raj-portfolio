@@ -3,15 +3,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 
-/* ──────────────────────────────────────────────────────────
-   CUSTOM CURSOR
-
-   Default:              18px filled accent dot
-   Links / buttons:      28px, 40% opacity
-   [data-cursor-label]:  dot morphs into pill (camera + label)
-   [data-cursor-hide]:   hides cursor entirely
-   ────────────────────────────────────────────────────────── */
-
 const DOT_SIZE = 18;
 const DOT_HOVER_SIZE = 28;
 
@@ -20,6 +11,7 @@ export function CustomCursor() {
   const pillRef = useRef<HTMLDivElement>(null);
   const visible = useRef(false);
   const isLabel = useRef(false);
+  const activeLabelEl = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (window.matchMedia("(pointer: coarse)").matches) return;
@@ -41,15 +33,38 @@ export function CustomCursor() {
         scale: 1,
         duration: 0.25,
         ease: "power2.out",
+        overwrite: true,
       });
     };
 
+    const showPill = (text: string) => {
+      const span = pill.querySelector("[data-label-text]") as HTMLSpanElement;
+      if (span) span.textContent = text;
+      isLabel.current = true;
+
+      gsap.to(dot, { opacity: 0, scale: 0.3, duration: 0.1, ease: "power2.in", overwrite: true });
+      gsap.fromTo(
+        pill,
+        { opacity: 0, scale: 0.5 },
+        { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(1.5)", overwrite: true }
+      );
+    };
+
     const hidePill = () => {
-      gsap.to(pill, {
-        opacity: 0,
-        scale: 0.3,
-        duration: 0.2,
-        ease: "power2.in",
+      isLabel.current = false;
+      activeLabelEl.current = null;
+
+      gsap.to(pill, { opacity: 0, scale: 0.5, duration: 0.1, ease: "power2.in", overwrite: true });
+      gsap.to(dot, {
+        opacity: 1,
+        scale: 1,
+        width: DOT_SIZE,
+        height: DOT_SIZE,
+        backgroundColor: "var(--accent-raw)",
+        border: "1.5px solid transparent",
+        duration: 0.15,
+        ease: "power2.out",
+        overwrite: true,
       });
     };
 
@@ -65,13 +80,26 @@ export function CustomCursor() {
         visible.current = true;
         gsap.to(dot, { opacity: 1, duration: 0.3 });
       }
+
+      /* ── Continuously check label state on move ── */
+      const target = e.target as HTMLElement;
+      const labelEl = target.closest("[data-cursor-label]") as HTMLElement | null;
+
+      if (labelEl && !isLabel.current) {
+        activeLabelEl.current = labelEl;
+        showPill(labelEl.getAttribute("data-cursor-label") || "");
+      } else if (!labelEl && isLabel.current) {
+        hidePill();
+      }
     };
 
     /* ── Leave window ── */
     const onMouseLeave = () => {
       visible.current = false;
-      gsap.to(dot, { opacity: 0, duration: 0.3 });
-      hidePill();
+      gsap.to(dot, { opacity: 0, duration: 0.3, overwrite: true });
+      gsap.to(pill, { opacity: 0, scale: 0.3, duration: 0.2, overwrite: true });
+      isLabel.current = false;
+      activeLabelEl.current = null;
     };
 
     /* ── Click ── */
@@ -90,31 +118,25 @@ export function CustomCursor() {
       const target = e.target as HTMLElement;
 
       if (target.closest("[data-cursor-hide]")) {
-        gsap.to(dot, { opacity: 0, duration: 0.15 });
+        gsap.to(dot, { opacity: 0, duration: 0.15, overwrite: true });
+        gsap.to(pill, { opacity: 0, duration: 0.15, overwrite: true });
         return;
       }
 
+      /* Label — handled in onMouseMove for reliability, but also catch initial entry */
       const labelEl = target.closest("[data-cursor-label]") as HTMLElement | null;
-      if (labelEl) {
-        const text = labelEl.getAttribute("data-cursor-label") || "";
-        const span = pill.querySelector("[data-label-text]") as HTMLSpanElement;
-        if (span) span.textContent = text;
-        isLabel.current = true;
-
-        gsap.to(dot, { opacity: 0, scale: 0.3, duration: 0.1, ease: "power2.in" });
-        gsap.fromTo(
-          pill,
-          { opacity: 0, scale: 0.5 },
-          { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(1.5)", delay: 0 }
-        );
+      if (labelEl && !isLabel.current) {
+        activeLabelEl.current = labelEl;
+        showPill(labelEl.getAttribute("data-cursor-label") || "");
         return;
       }
 
       if (
-        target.closest("a") ||
-        target.closest("button") ||
-        target.closest("[data-cursor-hover]") ||
-        target.closest("[data-cursor-view]")
+        !isLabel.current &&
+        (target.closest("a") ||
+          target.closest("button") ||
+          target.closest("[data-cursor-hover]") ||
+          target.closest("[data-cursor-view]"))
       ) {
         gsap.to(dot, {
           width: DOT_HOVER_SIZE,
@@ -124,6 +146,7 @@ export function CustomCursor() {
           opacity: 1,
           duration: 0.25,
           ease: "power2.out",
+          overwrite: true,
         });
       }
     };
@@ -131,32 +154,38 @@ export function CustomCursor() {
     /* ── Hover OUT ── */
     const onMouseOut = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
+      const relatedTarget = e.relatedTarget as HTMLElement | null;
 
       if (target.closest("[data-cursor-hide]")) {
-        gsap.to(dot, { opacity: 1, duration: 0.15 });
+        const stillInHide = relatedTarget?.closest("[data-cursor-hide]");
+        if (!stillInHide) {
+          gsap.to(dot, { opacity: 1, duration: 0.15, overwrite: true });
+        }
         return;
       }
 
+      /* Label — only hide if actually leaving the label container */
       if (target.closest("[data-cursor-label]")) {
-        isLabel.current = false;
-        gsap.to(pill, { opacity: 0, scale: 0.5, duration: 0.1, ease: "power2.in" });
-        gsap.to(dot, {
-          opacity: 1,
-          scale: 1,
-          width: DOT_SIZE,
-          height: DOT_SIZE,
-          duration: 0.15,
-          ease: "power2.out",
-          delay: 0,
-        });
+        const stillInLabel = relatedTarget?.closest("[data-cursor-label]");
+        if (stillInLabel === activeLabelEl.current) return; /* still inside same label */
+        if (stillInLabel) {
+          /* Moved to a different label — swap */
+          activeLabelEl.current = stillInLabel as HTMLElement;
+          const text = stillInLabel.getAttribute("data-cursor-label") || "";
+          const span = pill.querySelector("[data-label-text]") as HTMLSpanElement;
+          if (span) span.textContent = text;
+          return;
+        }
+        hidePill();
         return;
       }
 
       if (
-        target.closest("a") ||
-        target.closest("button") ||
-        target.closest("[data-cursor-hover]") ||
-        target.closest("[data-cursor-view]")
+        !isLabel.current &&
+        (target.closest("a") ||
+          target.closest("button") ||
+          target.closest("[data-cursor-hover]") ||
+          target.closest("[data-cursor-view]"))
       ) {
         resetDot();
       }
@@ -184,7 +213,6 @@ export function CustomCursor() {
 
   return (
     <>
-      {/* ── Filled dot ── */}
       <div
         ref={dotRef}
         className="fixed top-0 left-0 z-[9998] pointer-events-none"
@@ -198,8 +226,6 @@ export function CustomCursor() {
           willChange: "transform, width, height, opacity",
         }}
       />
-
-      {/* ── Label pill ── */}
       <div
         ref={pillRef}
         className="fixed top-0 left-0 z-[9999] pointer-events-none"

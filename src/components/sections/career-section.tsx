@@ -300,20 +300,20 @@ export function CareerSection({ id, entries }: CareerSectionProps) {
                   >
                     {/* Summary — italic one-liner */}
                     <p
-                      className="career-row-summary font-body font-medium leading-[1.6] tracking-[-0.005em]"
+                      className="career-row-summary font-body font-medium leading-[1.6] tracking-[-0.005em] "
                       style={{
                         color: "var(--text)",
                         opacity: 0.7,
                         fontSize: "var(--text-body)",
                         marginBottom: "clamp(16px, 2vw, 24px)",
-                        maxWidth: "680px",
+                        maxWidth: "990px",
                       }}
                     >
                       {entry.summary}
                     </p>
 
                     {/* Bullet points */}
-                    <div className="flex flex-col gap-[8px]" style={{ maxWidth: "680px" }}>
+                    <div className="flex flex-col gap-[8px]" style={{ maxWidth: "840px" }}>
                       {entry.bullets.map((bullet, bi) => (
                         <div key={bi} className="career-bullet flex gap-[10px] items-baseline">
                           <span
