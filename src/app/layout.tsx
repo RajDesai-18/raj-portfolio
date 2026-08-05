@@ -11,7 +11,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 
 
 export const metadata: Metadata = {
-  title: "Raj Desai — Fullstack Software Engineer",
+  title: "Raj Desai - Fullstack Software Engineer",
   description:
     "Product-minded fullstack engineer building things that are both useful and enjoyable to use. MS CS at UT Dallas, open to full-time roles July 2026.",
   metadataBase: new URL("https://rajdesai.io"),
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Raj Desai" }],
   creator: "Raj Desai",
   openGraph: {
-    title: "Raj Desai — Fullstack Software Engineer",
+    title: "Raj Desai - Fullstack Software Engineer",
     description:
       "Product-minded fullstack engineer building things that are both useful and enjoyable to use.",
     url: "https://rajdesai.dev",
@@ -40,13 +40,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Raj Desai — Fullstack Software Engineer",
+        alt: "Raj Desai - Fullstack Software Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Raj Desai — Fullstack Software Engineer",
+    title: "Raj Desai - Fullstack Software Engineer",
     description:
       "Product-minded fullstack engineer building things that are both useful and enjoyable to use.",
     images: ["/og-image.png"],

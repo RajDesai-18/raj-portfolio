@@ -3,7 +3,7 @@ import type { CareerEntry } from "@/components/sections/career-section";
 export const EDUCATION_ENTRIES: CareerEntry[] = [
   {
     id: "utd-ms",
-    isCurrent: true,
+    isCurrent: false,
     dateLabel: "2024 \u2013 2026",
     role: "M.S. Computer Science",
     organization: "University of Texas at Dallas",

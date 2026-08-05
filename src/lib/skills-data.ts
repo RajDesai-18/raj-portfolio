@@ -1,9 +1,14 @@
+export interface Tool {
+  name: string;
+  /** Daily driver. Rendered heavier and at full opacity. */
+  core?: boolean;
+}
+
 export interface Skill {
   id: string;
   number: string;
   name: string;
-  description: string;
-  pills: string[];
+  tools: Tool[];
 }
 
 export const SKILLS: Skill[] = [
@@ -11,84 +16,82 @@ export const SKILLS: Skill[] = [
     id: "frontend",
     number: "01",
     name: "FRONTEND",
-    description: "",
-    pills: [
-      "React",
-      "Next.js",
-      "TypeScript",
-      "Tailwind CSS",
-      "Framer Motion",
-      "GSAP",
-      "shadcn/ui",
-      "Recharts",
-      "Flutter",
-      "Figma",
+    tools: [
+      { name: "React", core: true },
+      { name: "Next.js", core: true },
+      { name: "TypeScript", core: true },
+      { name: "Tailwind CSS" },
+      { name: "Framer Motion" },
+      { name: "GSAP" },
+      { name: "shadcn/ui" },
+      { name: "Recharts" },
+      { name: "Flutter" },
+      { name: "Figma" },
     ],
   },
   {
     id: "backend",
     number: "02",
     name: "BACKEND",
-    description: "",
-    pills: [
-      "Node.js",
-      "Express.js",
-      "FastAPI",
-      "REST APIs",
-      "Redis",
-      "BullMQ",
-      "PostgreSQL",
-      "MongoDB",
-      "Prisma ORM",
-      "OAuth 2.0",
-      "JWT",
+    tools: [
+      { name: "Node.js", core: true },
+      { name: "FastAPI", core: true },
+      { name: "PostgreSQL", core: true },
+      { name: "Redis", core: true },
+      { name: "BullMQ", core: true },
+      { name: "Express.js" },
+      { name: "REST APIs" },
+      { name: "MongoDB" },
+      { name: "Prisma ORM" },
+      { name: "OAuth 2.0" },
+      { name: "JWT" },
     ],
   },
   {
     id: "ai",
     number: "03",
     name: "AI / ML",
-    description: "",
-    pills: [
-      "LLMs",
-      "OpenAI/Gemini APIs",
-      "FAISS",
-      "Sentence Transformers",
-      "Prompt Engineering",
-      "Semantic Search",
-      "NLP",
-      "Scikit-learn",
-      "PyTorch",
+    tools: [
+      { name: "LLMs", core: true },
+      { name: "FAISS", core: true },
+      { name: "OpenAI / Gemini APIs" },
+      { name: "Sentence Transformers" },
+      { name: "Semantic Search" },
+      { name: "Prompt Engineering" },
+      { name: "NLP" },
+      { name: "Scikit-learn" },
+      { name: "PyTorch" },
     ],
   },
   {
-    id: "design",
+    id: "architecture",
     number: "04",
     name: "ARCHITECTURE",
-    description: "",
-    pills: [
-      "System Design",
-      "API Design",
-      "Async Pipelines",
-      "Multi-tenant Systems",
-      "Real-time Data Flows",
-      "Database Design",
+    tools: [
+      { name: "System Design", core: true },
+      { name: "Async Pipelines", core: true },
+      { name: "API Design" },
+      { name: "Real-time Data Flows" },
+      { name: "Multi-tenant Systems" },
+      { name: "Database Design" },
     ],
   },
   {
-    id: "mobile",
+    id: "tooling",
     number: "05",
     name: "TOOLING",
-    description: "",
-    pills: [
-      "Git",
-      "GitHub Actions",
-      "Docker",
-      "CI/CD",
-      "Vitest",
-      "React Testing Library",
-      "WCAG 2.1 AA",
-      "Vercel",
+    tools: [
+      { name: "Git", core: true },
+      { name: "Docker", core: true },
+      { name: "GitHub Actions" },
+      { name: "CI/CD" },
+      { name: "Vitest" },
+      { name: "React Testing Library" },
+      { name: "WCAG 2.1 AA" },
+      { name: "Vercel" },
     ],
   },
 ];
+
+/** Total entries, derived so the header count can never drift from the data. */
+export const SKILL_COUNT = SKILLS.reduce((n, s) => n + s.tools.length, 0);

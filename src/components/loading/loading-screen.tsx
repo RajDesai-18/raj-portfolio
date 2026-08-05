@@ -55,7 +55,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
 
     tl.to(obj, {
       val: 100,
-      duration: 4,
+      duration: 2.0,
       ease: "power4.inOut",
       onUpdate: () => {
         const rounded = Math.round(obj.val);

@@ -433,7 +433,7 @@ export function AboutSection() {
                 opacity: 0.8,
               }}
             >
-              I&apos;m an engineer, builder, &amp; designer -- always chasing the next thing worth
+              I&apos;m an engineer, builder, &amp; designer always chasing the next thing worth
               making.
             </p>
 

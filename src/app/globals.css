@@ -140,7 +140,7 @@
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(0 0% 100%);
   --border: hsl(28 30% 90% / 0.11);
-  --input: hsl(28 30% 90% / 0.11);
+  --input: hsl(28 30% 90% / 0.37);
   --ring: hsl(174 62% 28%);
   --radius: 0.625rem;
 
@@ -149,18 +149,20 @@
   --accent-raw: #038c7f;
   --surface: rgba(242, 231, 220, 0.06);
   --border-custom: rgba(242, 231, 220, 0.11);
-  --text-muted: rgba(242, 231, 220, 0.42);
+  --rule-hairline: rgba(242, 231, 220, 0.16);
+  --rule-strong: rgba(242, 231, 220, 0.35);
+  --text-muted: rgba(242, 231, 220, 0.62);
   --accent-glow: rgba(3, 140, 127, 0.15);
 
   /* Responsive typography sizes */
   --text-display: clamp(2.5rem, 5.5vw, 5.5rem);
-  --text-heading: clamp(1.75rem, 3.5vw, 3rem);
-  --text-subheading: clamp(1.375rem, 2.2vw, 2rem);
-  --text-body-lg: clamp(1.125rem, 1.6vw, 1.5rem);
-  --text-body: clamp(1rem, 1.3vw, 1.25rem);
-  --text-body-sm: clamp(0.875rem, 1vw, 1.0625rem);
-  --text-label: clamp(0.6875rem, 0.8vw, 0.875rem);
-  --text-micro: clamp(0.625rem, 0.7vw, 0.8125rem);
+  --text-heading: clamp(2rem, 3.5vw, 3.5rem);
+  --text-subheading: clamp(1.5rem, 2.2vw, 2.25rem);
+  --text-body-lg: clamp(1.1875rem, 1.6vw, 1.5rem);
+  --text-body: clamp(1.0625rem, 1.3vw, 1.25rem);
+  --text-body-sm: clamp(0.9375rem, 1vw, 1.0625rem);
+  --text-label: clamp(0.8125rem, 0.85vw, 0.9375rem);
+  --text-micro: clamp(0.6875rem, 0.7vw, 0.75rem);
 }
 
 /* ───────────────────────────────────────────
@@ -178,13 +180,13 @@
   --secondary: hsl(28 36% 84%);
   --secondary-foreground: hsl(0 0% 5%);
   --muted: hsl(28 36% 84%);
-  --muted-foreground: hsl(0 0% 5% / 0.58);
+  --muted-foreground: hsl(0 0% 5% / 0.62);
   --accent: hsl(176 96% 23%);
   --accent-foreground: hsl(28 36% 94%);
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(0 0% 100%);
   --border: hsl(0 0% 5% / 0.16);
-  --input: hsl(0 0% 5% / 0.16);
+  --input: hsl(0 0% 5% / 0.46);
   --ring: hsl(176 96% 23%);
 
   --bg: #f2e7dc;
@@ -192,7 +194,9 @@
   --accent-raw: #027373;
   --surface: rgba(13, 13, 13, 0.07);
   --border-custom: rgba(13, 13, 13, 0.18);
-  --text-muted: rgba(13, 13, 13, 0.55);
+  --rule-hairline: rgba(13, 13, 13, 0.18);
+  --rule-strong: rgba(13, 13, 13, 0.43);
+  --text-muted: rgba(13, 13, 13, 0.62);
   --accent-glow: rgba(2, 115, 115, 0.12);
 }
 
@@ -202,13 +206,13 @@
 @media (min-width: 1800px) {
   :root {
     --text-display: clamp(3.5rem, 5vw, 6.5rem);
-    --text-heading: clamp(2.25rem, 3.2vw, 3.75rem);
-    --text-subheading: clamp(1.625rem, 2vw, 2.5rem);
-    --text-body-lg: clamp(1.25rem, 1.4vw, 1.75rem);
-    --text-body: clamp(1.125rem, 1.2vw, 1.5rem);
-    --text-body-sm: clamp(1rem, 0.9vw, 1.25rem);
-    --text-label: clamp(0.8125rem, 0.75vw, 1rem);
-    --text-micro: clamp(0.75rem, 0.65vw, 0.875rem);
+    --text-heading: clamp(2.5rem, 3.2vw, 4rem);
+    --text-subheading: clamp(1.875rem, 2vw, 2.75rem);
+    --text-body-lg: clamp(1.375rem, 1.4vw, 1.75rem);
+    --text-body: clamp(1.1875rem, 1.2vw, 1.5rem);
+    --text-body-sm: clamp(1.0625rem, 0.9vw, 1.25rem);
+    --text-label: clamp(0.9375rem, 0.75vw, 1.0625rem);
+    --text-micro: clamp(0.8125rem, 0.65vw, 0.875rem);
   }
 }
 
@@ -346,27 +350,49 @@
   transform: translateY(100%);
 }
 
+/* Hero masthead */
+.hero-name {
+  font-size: clamp(3rem, 24vw, 7rem);
+  line-height: 0.86;
+  letter-spacing: -0.03em;
+}
+
+@media (min-width: 1024px) {
+  .hero-name {
+    font-size: min(17.2vw, 260px);
+    line-height: 0.76;
+    letter-spacing: -0.035em;
+    word-spacing: 0.08em;
+  }
+}
 /* ───────────────────────────────────────────
    Hero Marquee
    ─────────────────────────────────────────── */
-.hero-marquee-track {
-  animation: hero-marquee-scroll 50s linear infinite;
-  will-change: transform;
+@keyframes hero-marq {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
-@keyframes hero-marquee-scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+.hero-ticker {
+  width: 200%;
+  animation: hero-marq 26s linear infinite;
+}
+
+.hero-page-link,
+.hero-footer-link {
+  transition: color 0.25s ease, opacity 0.25s ease;
+}
+
+.hero-page-link:hover,
+.hero-footer-link:hover {
+  color: var(--accent-raw);
+  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-marquee-track {
-    animation: none;
-  }
+  .hero-ticker { animation: none; }
+  .hero-page-link,
+  .hero-footer-link { transition: none; }
 }
 
 /* ───────────────────────────────────────────
@@ -589,6 +615,47 @@ button:hover,
 @media (pointer: coarse) {
   [data-cursor-view] {
     cursor: pointer;
+  }
+}
+
+
+/* Skills index — tool rows */
+.tool-row {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--rule-hairline);
+  transition: border-bottom-color 0.25s ease;
+  transition:
+    color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.tool-name {
+  color: var(--text);
+  opacity: 0.7;
+  font-weight: 400;
+  transition:
+    color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.tool-name[data-core="true"] {
+  opacity: 1;
+  font-weight: 500;
+}
+
+.tool-row:hover {
+  border-bottom-color: var(--accent-raw);
+}
+
+.tool-row:hover .tool-name {
+  color: var(--accent-raw);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool-row,
+  .tool-name {
+    transition: none;
   }
 }
 
