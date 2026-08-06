@@ -6,9 +6,8 @@ import { CustomCursor } from "@/components/ui/custom-cursor";
 import { MeshGradient } from "@/components/background/mesh-gradient";
 import { FloatingThemeToggle } from "@/components/ui/floating-theme-toggle";
 import { Toaster } from "@/components/ui/sonner";
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
-
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "Raj Desai - Fullstack Software Engineer",
@@ -27,11 +26,12 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Raj Desai" }],
   creator: "Raj Desai",
+  appleWebApp: { title: "Raj Desai" },
   openGraph: {
     title: "Raj Desai - Fullstack Software Engineer",
     description:
       "Product-minded fullstack engineer building things that are both useful and enjoyable to use.",
-    url: "https://rajdesai.dev",
+    url: "https://rajdesai.io",
     siteName: "Raj Desai",
     locale: "en_US",
     type: "website",
@@ -68,13 +68,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
-        {/* Favicon */}
-        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <meta name="apple-mobile-web-app-title" content="Raj Desai" />
-        <link rel="manifest" href="/site.webmanifest" />
+        {/* Icons, apple-touch-icon and manifest are generated from the file
+            convention in src/app: favicon.ico, icon0.svg, icon1.png,
+            apple-icon.png, manifest.json. Do not add manual link tags here. */}
 
         {/* Critical font preloads */}
         <link
