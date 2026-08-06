@@ -18,10 +18,41 @@ export interface Project {
 
 export const PROJECTS: Project[] = [
   {
-    id: "yoru",
+    id: "clauseguard",
     number: "01",
+    name: "CLAUSEGUARD",
+    oneLiner:
+      "Clause-by-clause contract risk analysis with redlines you can paste straight into a negotiation.",
+    detailedDescription:
+      "ClauseGuard takes an NDA, MSA, or SOW and returns a plain-English risk breakdown for every clause, plus a redlined Word document for the risky ones. Analysis runs as a five-stage Celery saga, and each stage commits before the next begins, so a worker can crash mid-run without losing paid work. Classification fans out one parallel task per clause. Every model call passes a circuit breaker with automatic provider failover, and every clause hits a cache before it is allowed to cost anything. Nine containerized services, deployed and running on a VPS I administer myself.",
+    whyIBuiltIt:
+      "I wanted one project where the hard part was not the feature list. Anything can call an API and render the response. Keeping it correct is the actual work: what happens when a provider degrades, when a worker dies at stage four, when the same clause arrives for the two hundredth time, when someone needs their data back. I also wanted to find out whether I could run the whole thing myself rather than handing the interesting parts to a platform.",
+    pills: [
+      "Next.js",
+      "TypeScript",
+      "FastAPI",
+      "Celery",
+      "RabbitMQ",
+      "PostgreSQL",
+      "pgvector",
+      "Redis",
+      "Docker",
+      "LiteLLM",
+    ],
+    image: {
+      src: "/images/clauseguard-project.png",
+      alt: "ClauseGuard — AI contract review platform",
+    },
+    links: {
+      live: "https://clauseguard.dev",
+      github: "https://github.com/RajDesai-18/clauseguard",
+    },
+  },
+  {
+    id: "yoru",
+    number: "02",
     name: "YORU",
-    oneLiner: "A full-screen ambient station where you don't press play -- you step inside.",
+    oneLiner: "A full-screen ambient station where you don't press play, you step inside.",
     detailedDescription:
       "Yoru is a full-screen listening environment built around 21 anime-style scenes and 13 layered soundscapes. Scenes and sounds are mapped together -- switching audio automatically transitions the visuals to match. The UI fades away after a few seconds of inactivity so there's nothing between you and the atmosphere. Every transition crossfades, every interaction has keyboard support, and the whole experience is designed to make you forget you're in a browser.",
     whyIBuiltIt:
@@ -47,7 +78,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "pr-sensei",
-    number: "02",
+    number: "03",
     name: "PR SENSEI",
     oneLiner: "AI-powered code reviews that land on your PR in under 30 seconds.",
     detailedDescription:
@@ -73,7 +104,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "llm-cookbook",
-    number: "03",
+    number: "04",
     name: "LLM COOKBOOK",
     oneLiner: "Type in what's in your fridge, get back recipes that actually make sense.",
     detailedDescription:
@@ -93,33 +124,6 @@ export const PROJECTS: Project[] = [
     ],
     links: {
       github: "https://github.com/RajDesai-18/llm-cookbook",
-    },
-  },
-  {
-    id: "financial-saas",
-    number: "04",
-    name: "FINANCIAL SAAS",
-    oneLiner:
-      "A personal finance dashboard that connects to real bank accounts and makes your money make sense.",
-    detailedDescription:
-      "Horizon connects to multiple bank accounts through Plaid, pulls in real transaction data, and unifies everything into a single dashboard -- balances, spending breakdowns, transaction history, and fund transfers via Dwolla. Auth is handled server-side with Appwrite, and the UI updates in real time as accounts are linked or transactions come in. The focus was on building a complete product: proper loading states, responsive tables, form validation with Zod, and a cohesive design system -- not just a feature demo.",
-    whyIBuiltIt:
-      "I wanted to build something that feels like a real product, not just a feature. Most portfolio projects stop at the UI -- I wanted to go further and deal with real bank APIs, real auth flows, real-time data, and the messy details that make an app actually work end to end.",
-    pills: [
-      "Next.js",
-      "TypeScript",
-      "Appwrite",
-      "Plaid",
-      "Dwolla",
-      "Tailwind CSS",
-      "Chart.js",
-      "React Hook Form",
-      "Zod",
-      "shadcn/ui",
-    ],
-    links: {
-      live: "https://financial-saas-platform.vercel.app",
-      github: "https://github.com/RajDesai-18/Financial_SaaS_Platform",
     },
   },
 ];

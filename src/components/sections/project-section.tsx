@@ -143,8 +143,7 @@ function WhyBuiltIt({ text }: { text: string }) {
               color: "var(--text)",
               opacity: 0.7,
               fontSize: "var(--text-body-sm)",
-              fontStyle: "italic",
-              maxWidth: "520px",
+              maxWidth: "720px",
             }}
           >
             {text}
@@ -468,7 +467,7 @@ export function ProjectsSection() {
                           {project.number}
                         </span>
                         <h3
-                          className="typo-row-name font-display font-bold tracking-[-0.04em] leading-[0.85] transition-colors duration-400"
+                          className="typo-row-name font-display font-bold tracking-[0.04em] leading-[0.85] transition-colors duration-400"
                           style={{
                             color: isExpanded ? "var(--accent-raw)" : "var(--text)",
                             fontSize: "clamp(2.5rem, 5.5vw, 4.5rem)",
@@ -485,7 +484,7 @@ export function ProjectsSection() {
                             color: "var(--text)",
                             opacity: 0.7,
                             fontSize: "var(--text-body-sm)",
-                            maxWidth: "440px",
+                            maxWidth: "550px",
                           }}
                         >
                           {project.oneLiner}

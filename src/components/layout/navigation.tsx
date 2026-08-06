@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { ScrambleText } from "@/components/ui/scramble-text";
 import { useTheme } from "@/components/providers/theme-provider";
 import { Sun, Moon } from "lucide-react";
@@ -100,6 +100,27 @@ export function Navigation({ visible = true }: NavigationProps) {
         { scaleX: 1, opacity: 1, duration: 0.6, ease: "none", stagger: 0.05 },
         0.3
       );
+    });
+
+    return () => ctx.revert();
+  }, []);
+
+  /* ── Hide until the hero is behind us; "What's below" covers it there ── */
+  useEffect(() => {
+    if (typeof window === "undefined" || !navWrapRef.current) return;
+    const hero = document.querySelector("#hero");
+    if (!hero) return;
+
+    const el = navWrapRef.current;
+    gsap.set(el, { autoAlpha: 0 });
+
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: hero,
+        start: "bottom 90%",
+        onEnter: () => gsap.to(el, { autoAlpha: 1, duration: 0.4, ease: "power2.out" }),
+        onLeaveBack: () => gsap.to(el, { autoAlpha: 0, duration: 0.3, ease: "power2.in" }),
+      });
     });
 
     return () => ctx.revert();

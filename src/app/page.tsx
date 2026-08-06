@@ -17,8 +17,8 @@ import { FooterSection } from "@/components/sections/footer-section";
 
 export default function Home() {
   const hasChecked = useRef(false);
-  const [isReturningVisitor, setIsReturningVisitor] = useState<boolean | null>(null);
-  const [showLoading, setShowLoading] = useState(false);
+  const [isReturningVisitor, setIsReturningVisitor] = useState(false);
+  const [showLoading, setShowLoading] = useState(true);
   const [heroRevealed, setHeroRevealed] = useState(false);
   const [heroReady, setHeroReady] = useState(false);
 
@@ -53,8 +53,6 @@ export default function Home() {
       });
     });
   }, []);
-
-  if (isReturningVisitor === null) return null;
 
   return (
     <>
