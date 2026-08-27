@@ -109,7 +109,7 @@ function MobileEntry({ entry }: { entry: CareerEntry }) {
               className="font-mono flex-shrink-0"
               style={{ color: "var(--accent-raw)", fontSize: "var(--text-micro)", opacity: 0.8 }}
             >
-              --
+              →
             </span>
             <span
               className="font-body font-medium leading-[1.55] tracking-[-0.005em]"
@@ -327,7 +327,7 @@ export function CareerSection({ id, entries }: CareerSectionProps) {
                               opacity: 0.8,
                             }}
                           >
-                            --
+                            →
                           </span>
                           <span
                             className="font-body font-medium leading-[1.55] tracking-[-0.005em]"

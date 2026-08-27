@@ -2,6 +2,20 @@ import type { CareerEntry } from "@/components/sections/career-section";
 
 export const EXPERIENCE_ENTRIES: CareerEntry[] = [
   {
+    id: "urdp",
+    isCurrent: true,
+    dateLabel: "Jul 2026 \u2013 Present",
+    role: "Full-Stack Software\u00A0Engineer",
+    organization: "Universal Removal Defense Project",
+    summary:
+      "Volunteer engineer on an open-source Django platform routing immigrants and asylum seekers to licensed immigration attorneys.",
+    bullets: [
+      "Co-own the intake platform as one of two engineers on the repo, serving 10 languages including right-to-left scripts",
+      "Audited architecture, request flow, and code quality before contributing, then converted the open backlog into a sequenced implementation plan the team is executing against",
+      "Restored multilingual support by tracing a silent locale-compilation failure across Docker startup paths",
+    ],
+  },
+  {
     id: "utd-sa",
     isCurrent: false,
     dateLabel: "Sep 2025 \u2013 May 2026",
